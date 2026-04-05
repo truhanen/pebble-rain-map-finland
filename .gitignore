@@ -1,0 +1,12 @@
+.idea
+.vscode
+tmp
+cache
+build
+flake.lock
+.lock-waf_*
+node_modules
+package-lock.json
+include/pebble
+scripts/svg2pdc.py
+screenshots/png

@@ -1,0 +1,222 @@
+#include "draw.h"
+
+#include <pebble.h>
+
+#include "../modules/radar_data.h"
+#include "../modules/radar_data_cache.h"
+#include "../modules/state.h"
+#include "../modules/types.h"
+#include "../modules/utils.h"
+
+#define COLOR_RAIN_NONE GColorWhite
+#define COLOR_RAIN_MIST GColorCyan
+#define COLOR_RAIN_TRACE GColorJaegerGreen
+#define COLOR_RAIN_LIGHT GColorChromeYellow
+#define COLOR_RAIN_MODERATE GColorOrange
+#define COLOR_RAIN_HEAVY GColorRed
+#define COLOR_RAIN_VERY_HEAVY GColorMagenta
+
+#define COLOR_BW_RAIN_NONE GColorWhite
+#define COLOR_BW_RAIN GColorBlack
+
+#define FONT_SMALL FONT_KEY_GOTHIC_09
+#define FONT_MEDIUM FONT_KEY_GOTHIC_14_BOLD
+
+void draw_radar(
+    const Layer* layer,
+    GContext* ctx,
+    int timestep_index,
+    MapZoomLevel zoom_level
+) {
+    if (timestep_index < 0) {
+        return;
+    }
+
+    radar_data_t* radar_data = radar_data_cache_get_item(timestep_index, zoom_level);
+
+    GRect layer_bounds = layer_get_bounds(layer);
+
+    size_t pixels_per_point = layer_bounds.size.w / radar_data->width;
+
+    for (size_t screen_y = 0; screen_y < (size_t) layer_bounds.size.h; screen_y++) {
+        size_t radar_y = screen_y / pixels_per_point;
+        for (size_t screen_x = 0; screen_x < (size_t) layer_bounds.size.w; screen_x++) {
+            size_t radar_x = screen_x / pixels_per_point;
+            RainLevel rain_level =
+                radar_data_get_point_rain_level(radar_data, radar_y, radar_x);
+
+            GColor color = COLOR_BW_RAIN_NONE;
+
+#if defined(PBL_BW)
+            bool is_rain_pixel = true;  // High rain
+            if (rain_level == RAIN_LEVEL_NONE) {
+                is_rain_pixel = false;
+            } else if (
+                rain_level == RAIN_LEVEL_MIST || rain_level == RAIN_LEVEL_TRACE ||
+                rain_level == RAIN_LEVEL_LIGHT
+            ) {
+                // Sparse pattern
+                is_rain_pixel =
+                    ((screen_x % 2 == 0 && screen_y % 2 == 0 && screen_y % 4 == 0) ||
+                     (screen_x % 2 == 1 && screen_y % 2 == 0 && screen_y % 4 != 0));
+            } else if (rain_level == RAIN_LEVEL_MODERATE) {
+                // Every other pixel black
+                is_rain_pixel = ((screen_x + screen_y) % 2 == 0);
+            }
+
+            color = is_rain_pixel ? COLOR_BW_RAIN : COLOR_BW_RAIN_NONE;
+#elif defined(PBL_COLOR)
+            color = COLOR_RAIN_VERY_HEAVY;
+            if (rain_level == RAIN_LEVEL_NONE) {
+                color = COLOR_RAIN_NONE;
+            } else if (rain_level == RAIN_LEVEL_MIST) {
+                color = COLOR_RAIN_MIST;
+            } else if (rain_level == RAIN_LEVEL_TRACE) {
+                color = COLOR_RAIN_TRACE;
+            } else if (rain_level == RAIN_LEVEL_LIGHT) {
+                color = COLOR_RAIN_LIGHT;
+            } else if (rain_level == RAIN_LEVEL_MODERATE) {
+                color = COLOR_RAIN_MODERATE;
+            } else if (rain_level == RAIN_LEVEL_HEAVY) {
+                color = COLOR_RAIN_HEAVY;
+            }
+#endif
+
+            graphics_context_set_stroke_color(ctx, color);
+
+            graphics_draw_pixel(ctx, GPoint(screen_x, screen_y));
+        }
+    }
+}
+
+static void draw_text(
+    GContext* ctx,
+    const char* text,
+    GRect rect,
+    GFont font,
+    GTextAlignment alignment
+) {
+    GRect rect_shadow =
+        GRect(rect.origin.x + 1, rect.origin.y + 1, rect.size.w, rect.size.h);
+    graphics_context_set_text_color(ctx, COLOR_DRAW_BACKGROUND);
+    graphics_draw_text(
+        ctx, text, font, rect_shadow, GTextOverflowModeWordWrap, alignment, NULL
+    );
+
+    graphics_context_set_text_color(ctx, COLOR_DRAW_FOREGROUND);
+    graphics_draw_text(
+        ctx, text, font, rect, GTextOverflowModeWordWrap, alignment, NULL
+    );
+}
+
+void draw_circle(const Layer* layer, GContext* ctx, MapZoomLevel zoom_level) {
+    GRect layer_bounds = layer_get_bounds(layer);
+
+    size_t width_kilometers = zoom_level;
+
+    uint16_t pixels_per_100_km = layer_bounds.size.w * 100 / width_kilometers;
+    int32_t circle_radius_km = 50;
+    uint16_t circle_radius = (uint16_t) (circle_radius_km * pixels_per_100_km / 100);
+    GRect circle_rect = GRect(
+        layer_bounds.size.w / 2 - circle_radius,
+        layer_bounds.size.h / 2 - circle_radius,
+        circle_radius * 2,
+        circle_radius * 2
+    );
+
+    int32_t angle_start = 25;
+    int32_t angle_end = 335;
+    // Less angle is needed for the text when magnified
+    if (zoom_level == MAP_ZOOM_LEVEL_CLOSE) {
+        angle_start = 10;
+        angle_end = 350;
+    }
+
+    graphics_context_set_stroke_color(ctx, COLOR_DRAW_FOREGROUND);
+    graphics_context_set_stroke_width(ctx, 1);
+    graphics_draw_arc(
+        ctx,
+        circle_rect,
+        GOvalScaleModeFillCircle,
+        DEG_TO_TRIGANGLE(angle_start),
+        DEG_TO_TRIGANGLE(angle_end)
+    );
+
+    GRect text_rect = GRect(0, circle_rect.origin.y - 6, layer_bounds.size.w, 10);
+
+    draw_text(
+        ctx, "50km", text_rect, fonts_get_system_font(FONT_SMALL), GTextAlignmentCenter
+    );
+}
+
+void draw_timestep_indicator(
+    const Layer* layer,
+    GContext* ctx,
+    int timestep_index,
+    MapZoomLevel zoom_level
+) {
+    if (timestep_index < 0) {
+        return;
+    }
+
+    size_t radar_data_item_count =
+        radar_data_cache_get_zoom_level_item_count(zoom_level);
+    if (radar_data_item_count == 0) {
+        return;
+    }
+
+    GRect bounds = layer_get_bounds(layer);
+
+    int width = 5;
+    int height = bounds.size.h / (int) radar_data_item_count + 1;
+    int y = bounds.size.h - height * (timestep_index + 1);
+    GRect rect = GRect(bounds.size.w - width, y, width, height);
+
+    graphics_context_set_fill_color(ctx, COLOR_DRAW_FOREGROUND);
+    graphics_fill_rect(ctx, rect, 2, GCornersLeft);
+}
+
+void draw_timestamp(
+    const Layer* layer,
+    GContext* ctx,
+    int timestep_index,
+    MapZoomLevel zoom_level
+) {
+    if (timestep_index < 0) {
+        return;
+    }
+
+    radar_data_t* radar_data = radar_data_cache_get_item(timestep_index, zoom_level);
+
+    time_t timestamp = radar_data->timestamp;
+    tm* time_info = localtime(&timestamp);
+    char timestamp_text[16];
+    strftime(timestamp_text, sizeof(timestamp_text), "%H:%M", time_info);
+
+    GFont font = fonts_get_system_font(FONT_MEDIUM);
+    GTextAlignment alignment = GTextAlignmentCenter;
+    GTextOverflowMode overflow_mode = GTextOverflowModeTrailingEllipsis;
+    int16_t rect_height = 16;
+
+    GRect layer_bounds = layer_get_bounds(layer);
+
+    // Calculate the width of the text rectangle dynamically
+    GSize text_size = graphics_text_layout_get_content_size(
+        timestamp_text,
+        font,
+        GRect(0, 0, layer_bounds.size.w, rect_height),
+        overflow_mode,
+        alignment
+    );
+    int rect_width = text_size.w + 4;
+
+    // Negative y-coordinate for fine-tuned text position
+    GRect rect =
+        GRect((layer_bounds.size.w - rect_width) / 2, -3, rect_width, rect_height);
+
+    graphics_context_set_fill_color(ctx, COLOR_DRAW_FOREGROUND);
+    graphics_context_set_text_color(ctx, COLOR_DRAW_BACKGROUND);
+
+    graphics_fill_rect(ctx, rect, 2, GCornersBottom);
+    graphics_draw_text(ctx, timestamp_text, font, rect, overflow_mode, alignment, NULL);
+}

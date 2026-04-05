@@ -1,0 +1,37 @@
+---
+#Language: C
+
+BasedOnStyle: Google
+
+IndentWidth: 4
+ColumnLimit: 88
+
+AlignAfterOpenBracket: true
+BreakAfterOpenBracketBracedList: true
+BreakAfterOpenBracketFunction: true
+BreakAfterOpenBracketIf: true
+BreakAfterOpenBracketLoop: true
+BreakAfterOpenBracketSwitch: true
+BreakBeforeCloseBracketBracedList: true
+BreakBeforeCloseBracketFunction: true
+BreakBeforeCloseBracketIf: true
+BreakBeforeCloseBracketLoop: true
+BreakBeforeCloseBracketSwitch: true
+
+BinPackArguments: false
+AlignArrayOfStructures: Left
+
+BinPackParameters: OnePerLine
+AllowAllParametersOfDeclarationOnNextLine: false
+PenaltyReturnTypeOnItsOwnLine: 1000
+
+AllowShortEnumsOnASingleLine: false
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortFunctionsOnASingleLine: None
+
+PenaltyBreakOpenParenthesis: 0
+ReflowComments: Never
+SpaceAfterCStyleCast: true
+InsertNewlineAtEOF: true
+...

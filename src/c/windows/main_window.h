@@ -1,0 +1,5 @@
+#pragma once
+
+void main_window_push();
+
+void main_window_update();

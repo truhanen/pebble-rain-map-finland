@@ -1,0 +1,88 @@
+{
+    "name": "rain-map-finland",
+    "author": "Tuukka Ruhanen <tuukka.t.ruhanen@gmail.com>",
+    "version": "1.0.0",
+    "keywords": [
+        "rain",
+        "map",
+        "finland",
+        "weather",
+        "radar",
+        "fmi",
+        "finnish",
+        "meteorological",
+        "institute"
+    ],
+    "private": true,
+    "dependencies": {},
+    "pebble": {
+        "displayName": "Rain Map Finland",
+        "uuid": "1484347e-6ad9-460b-8b9a-0477e173c29b",
+        "sdkVersion": "3",
+        "enableMultiJS": true,
+        "targetPlatforms": [
+            "emery"
+        ],
+        "watchapp": {
+            "watchface": false
+        },
+        "messageKeys": [
+            "JS_READY",
+            "TRANSMIT_DATA",
+            "COORDINATES",
+            "LATITUDE_MIN",
+            "LATITUDE_MAX",
+            "LONGITUDE_MIN",
+            "LONGITUDE_MAX",
+            "RADAR_DATA_SPEC",
+            "TIMESTAMP",
+            "WIDTH",
+            "HEIGHT",
+            "ZOOM_LEVEL",
+            "RADAR_DATA_CHUNK",
+            "RADAR_DATA_CHUNK_SIZE",
+            "RADAR_DATA_CHUNK_START_INDEX",
+            "RADAR_DATA_TRANSMIT_COMPLETE"
+        ],
+        "resources": {
+            "media": [
+                {
+                    "type": "bitmap",
+                    "name": "LAUNCHER_ICON",
+                    "file": "launcher_icon.png",
+                    "menuIcon": true
+                },
+                {
+                    "type": "raw",
+                    "name": "MAP_BORDER_COASTLINES",
+                    "file": "map_border_coastlines.pdc"
+                },
+                {
+                    "type": "raw",
+                    "name": "MAP_TOWNS",
+                    "file": "map_towns.pdc"
+                },
+                {
+                    "type": "raw",
+                    "name": "MAP_HIGHWAYS",
+                    "file": "map_highways.pdc"
+                }
+            ]
+        },
+        "capabilities": [
+            "location"
+        ]
+    },
+    "devDependencies": {
+        "prettier": "^3.8.0",
+        "typescript": "^5.9.3"
+    },
+    "scripts": {
+        "build": "tsc",
+        "build:watch": "tsc -p tsconfig.json --watch",
+        "clean": "rm -rf build/tsc",
+        "typecheck": "tsc -p tsconfig.json --noEmit",
+        "format": "prettier --write 'src/pkjs/**/*.ts'",
+        "format:check": "prettier --check 'src/pkjs/**/*.ts'"
+    }
+}

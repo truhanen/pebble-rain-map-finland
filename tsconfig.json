@@ -1,0 +1,30 @@
+{
+    "compilerOptions": {
+        "rootDir": "src/pkjs",
+        "outDir": "build/tsc/pkjs",
+        // Basic Options
+        "module": "CommonJS",
+        "target": "ES5",
+        "lib": ["ES5", "DOM"],
+        // Type Checking
+        "strict": true,
+        "noImplicitAny": true,
+        "skipLibCheck": true,
+        "noUncheckedIndexedAccess": true,
+        "exactOptionalPropertyTypes": true,
+        // Style Options
+        "noImplicitReturns": true,
+        "noImplicitOverride": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noFallthroughCasesInSwitch": true,
+        "noPropertyAccessFromIndexSignature": true,
+        // Other
+        "esModuleInterop": true,
+        "downlevelIteration": true,
+        "sourceMap": true,
+        "inlineSourceMap": false
+    },
+    "include": ["src/pkjs/**/*.ts"],
+    "exclude": ["node_modules", "build"]
+}

@@ -1,0 +1,12 @@
+matplotlib
+requests
+numpy
+pillow==11.3.0
+fmiopendata
+rasterio
+shapely
+simplification
+geopandas
+svgwrite
+skan
+scikit-image
