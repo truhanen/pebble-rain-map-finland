@@ -35,6 +35,30 @@ static void window_load(const Window* window) {
     layer_add_child(root_layer, s_draw_layer);
 }
 
+#if defined(PBL_TOUCH)
+static void touch_handler(const TouchEvent* event, void* context) {
+    if (event->type != TouchEvent_Touchdown && event->type != TouchEvent_PositionUpdate) {
+        return;
+    }
+    int new_index = convert_y_to_timestep_index(s_draw_layer, event->y);
+    if (new_index < 0 || new_index == s_timestep_index) {
+        return;
+    }
+    s_timestep_index = new_index;
+    main_window_update();
+}
+
+static void window_appear(Window* window) {
+    if (touch_service_is_enabled()) {
+        touch_service_subscribe(touch_handler, NULL);
+    }
+}
+
+static void window_disappear(Window* window) {
+    touch_service_unsubscribe();
+}
+#endif
+
 static void window_unload(Window* window) {
     layer_destroy(s_draw_layer);
     window_destroy(window);
@@ -112,6 +136,10 @@ void main_window_push() {
         (WindowHandlers) {
             .load = (WindowHandler) window_load,
             .unload = (WindowHandler) window_unload,
+#if defined(PBL_TOUCH)
+            .appear = (WindowHandler) window_appear,
+            .disappear = (WindowHandler) window_disappear,
+#endif
         }
     );
     window_stack_push(s_window, true);

@@ -29,3 +29,5 @@ void draw_timestamp(
     GContext* ctx,
     int timestep_index
 );
+
+int convert_y_to_timestep_index(const Layer* layer, int y);

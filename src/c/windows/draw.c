@@ -301,6 +301,25 @@ void draw_timestep_indicator(
     graphics_fill_rect(ctx, rect, 2, GCornersLeft);
 }
 
+int convert_y_to_timestep_index(const Layer* layer, int y) {
+    size_t count = radar_data_cache_get_max_item_count();
+    if (count == 0) {
+        return -1;
+    }
+
+    GRect bounds = layer_get_bounds(layer);
+    int height = bounds.size.h / (int) count + 1;
+    int index = (bounds.size.h - y - 1) / height;
+
+    if (index < 0) {
+        index = 0;
+    } else if (index >= (int) count) {
+        index = (int) count - 1;
+    }
+
+    return index;
+}
+
 void draw_timestamp(
     const Layer* layer,
     GContext* ctx,
