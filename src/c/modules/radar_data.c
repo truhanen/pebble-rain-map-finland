@@ -64,7 +64,7 @@ radar_data_t* radar_data_init(
     }
 
     if (!data) {
-        APP_LOG(APP_LOG_LEVEL_ERROR, "malloc failed for size: %d", byte_count);
+        APP_LOG(APP_LOG_LEVEL_ERROR, "malloc failed for size: %u", byte_count);
         return NULL;
     }
     memset(data, 0, byte_count);
@@ -72,7 +72,7 @@ radar_data_t* radar_data_init(
     radar_data_t* radar_data = malloc(sizeof(radar_data_t));
     if (!radar_data) {
         APP_LOG(
-            APP_LOG_LEVEL_ERROR, "malloc failed for size: %d", sizeof(radar_data_t)
+            APP_LOG_LEVEL_ERROR, "malloc failed for size: %u", sizeof(radar_data_t)
         );
         return NULL;
     }
