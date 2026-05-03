@@ -8,7 +8,7 @@ build:
 
 .PHONY: install
 install: build
-	pebble install -v --emulator $(PEBBLE_EMULATOR)
+	pebble install -vv --emulator $(PEBBLE_EMULATOR)
 
 .PHONY: logs
 logs:
