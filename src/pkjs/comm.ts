@@ -10,6 +10,8 @@ import { DISPLAY_DIMENSIONS } from "./pebble";
 // smaller than the chunk itself may be transmitted in one message.
 const MAX_CHUNK_SIZE: number = 8000;
 
+const DEBUG: boolean = false;
+
 function transmitCoordinateBounds(
     successCallback: (bounds: CoordinateBounds) => void,
 ) {
@@ -24,6 +26,9 @@ function transmitCoordinateBounds(
         Pebble.sendAppMessage(
             dict,
             () => {
+                if (DEBUG) {
+                    console.log("transmitCoordinateBounds succeeded");
+                }
                 successCallback(bounds);
             },
             () => {
@@ -76,6 +81,9 @@ function transmitRadarDataSpecs(
             Pebble.sendAppMessage(
                 specMessage,
                 () => {
+                    if (DEBUG) {
+                        console.log("transmitRadarDataSpecs succeeded");
+                    }
                     successCallback(radarData);
                 },
                 () => {
@@ -109,6 +117,23 @@ function getRadarDataChunk(
         data: dataChunk,
         size: chunkSize,
     };
+}
+
+function transmitRadarDataComplete(
+    successCallback: () => void,
+): void {
+    Pebble.sendAppMessage(
+        { RADAR_DATA_TRANSMIT_COMPLETE: 0 },
+        () => {
+            if (DEBUG) {
+                console.log("transmitRadarDataComplete succeeded");
+            }
+            successCallback();
+        },
+        () => {
+            console.log("transmitRadarDataComplete failed");
+        },
+    );
 }
 
 function transmitRadarData(
@@ -151,6 +176,9 @@ function transmitRadarData(
     Pebble.sendAppMessage(
         chunkMessage,
         () => {
+            if (DEBUG) {
+                console.log("transmitRadarData succeeded");
+            }
             if (chunkStartIndex == null) {
                 return;
             }
@@ -164,8 +192,7 @@ function transmitRadarData(
                     latestTimestamp,
                 );
             } else {
-                Pebble.sendAppMessage(
-                    { RADAR_DATA_TRANSMIT_COMPLETE: 0 },
+                transmitRadarDataComplete(
                     () => {
                         if (specIndex < RADAR_DATA_SPECS.length - 1) {
                             transmitRadarData(
@@ -194,7 +221,17 @@ function transmitData(): void {
 
 export function setupComm(): void {
     Pebble.addEventListener("ready", () => {
-        Pebble.sendAppMessage({ JS_READY: 1 });
+        Pebble.sendAppMessage(
+            {JS_READY: 1 },
+            () => {
+                if (DEBUG) {
+                    console.log("JS_READY message succeeded");
+                }
+            },
+            () => {
+                console.log("JS_READY message failed");
+            }
+        );
     });
 
     Pebble.addEventListener("appmessage", (e: any) => {
