@@ -26,7 +26,8 @@ static void draw_radar_layer(
     const Layer* layer,
     GContext* ctx,
     const radar_data_t* radar_data,
-    uint16_t view_width_km
+    uint16_t view_width_km,
+    bool rounded
 ) {
     if (radar_data == NULL) {
         return;
@@ -45,6 +46,12 @@ static void draw_radar_layer(
     int32_t y_offset =
         ((int32_t) layer_bounds.size.h - (int32_t) radar_data->height_px * pixels_per_point) / 2;
 
+    // Circle clipping: inscribed circle of the rendered raster
+    int32_t center_x = x_offset + (int32_t) radar_data->width_px * pixels_per_point / 2;
+    int32_t center_y = y_offset + (int32_t) radar_data->height_px * pixels_per_point / 2;
+    int32_t radius = (int32_t) radar_data->width_px * pixels_per_point / 2;
+    int32_t radius_sq = radius * radius;
+
     for (int32_t screen_y = 0; screen_y < (int32_t) layer_bounds.size.h; screen_y++) {
         int32_t radar_y = (screen_y - y_offset) / pixels_per_point;
         if (radar_y < 0 || radar_y >= (int32_t) radar_data->height_px) {
@@ -54,6 +61,13 @@ static void draw_radar_layer(
             int32_t radar_x = (screen_x - x_offset) / pixels_per_point;
             if (radar_x < 0 || radar_x >= (int32_t) radar_data->width_px) {
                 continue;
+            }
+            if (rounded) {
+                int32_t dx = screen_x - center_x;
+                int32_t dy = screen_y - center_y;
+                if (dx * dx + dy * dy > radius_sq) {
+                    continue;
+                }
             }
             RainLevel rain_level =
                 radar_data_get_point_rain_level(radar_data, radar_y, radar_x);
@@ -114,13 +128,15 @@ void draw_radar(
     draw_radar_layer(
         layer, ctx,
         radar_data_cache_get_item(timestep_index, 400),
-        (uint16_t) zoom_level
+        (uint16_t) zoom_level,
+        false
     );
 
     draw_radar_layer(
         layer, ctx,
         radar_data_cache_get_item(timestep_index, 100),
-        (uint16_t) zoom_level
+        (uint16_t) zoom_level,
+        true
     );
 }
 
