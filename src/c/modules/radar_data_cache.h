@@ -11,7 +11,7 @@ radar_data_t* radar_data_cache_get_item(
     uint16_t width_km
 );
 
-size_t radar_data_cache_get_zoom_level_item_count(uint16_t width_km);
+size_t radar_data_cache_get_item_count(uint16_t width_km);
 
 size_t radar_data_cache_get_max_item_count();
 

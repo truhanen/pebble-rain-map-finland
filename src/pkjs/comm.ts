@@ -4,13 +4,12 @@ import {
     getCoordinateBoundsForWidthKm,
 } from "./coordinates";
 import { getRadarDataSpec, RADAR_DATA_SPECS } from "./radar_data_specs";
-import { DISPLAY_DIMENSIONS } from "./pebble";
+
+const DEBUG: boolean = false;
 
 // From app_message_inbox_size_maximum(). Note that also other data, though
 // smaller than the chunk itself may be transmitted in one message.
 const MAX_CHUNK_SIZE: number = 8000;
-
-const DEBUG: boolean = false;
 
 function transmitCoordinateBounds(
     successCallback: (bounds: CoordinateBounds) => void,
@@ -49,8 +48,7 @@ function transmitRadarDataSpecs(
         coordinateBoundsFar,
         spec.widthKm,
     );
-    const height =
-        (spec.widthPx * DISPLAY_DIMENSIONS.height) / DISPLAY_DIMENSIONS.width;
+    const heightPx = spec.widthPx;
     const minuteInMs = 60 * 1000;
     if (latestTimestamp == null) {
         latestTimestamp = new Date();
@@ -66,7 +64,7 @@ function transmitRadarDataSpecs(
     downloadRadarData(
         coordinateBounds,
         spec.widthPx,
-        height,
+        heightPx,
         timestamp,
         spec.widthKm,
         0,

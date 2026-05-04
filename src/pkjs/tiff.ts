@@ -1,5 +1,15 @@
+const DEBUG: boolean = false;
+
+
 export function readTiff(arrayBuffer: ArrayBuffer) {
     const dataView = new DataView(arrayBuffer);
+
+    if (DEBUG) {
+        console.log("readTiff buffer byteLength:", arrayBuffer.byteLength);
+        const firstBytes = new Uint8Array(arrayBuffer).subarray(0, 8);
+        console.log("readTiff first 8 bytes:", JSON.stringify(Array.from(firstBytes)));
+    }
+
     const littleEndian = dataView.getUint16(0, false) === 0x4949; // Check endianness
 
     function getUint16(offset: number) {
@@ -11,10 +21,20 @@ export function readTiff(arrayBuffer: ArrayBuffer) {
     }
 
     // TIFF header starts at byte 0
-    let offset = getUint32(4); // Offset to first IFD (Image File Directory)
+    const ifdOffset = getUint32(4); // Offset to first IFD (Image File Directory)
+    let offset = ifdOffset;
+
+    if (DEBUG) {
+        console.log("readTiff ifdOffset:", ifdOffset);
+    }
 
     // Read IFD
     const numEntries = getUint16(offset);
+
+    if (DEBUG) {
+        console.log("readTiff numEntries:", numEntries);
+    }
+
     offset += 2;
 
     let width: number | undefined;
@@ -77,6 +97,11 @@ export function readTiff(arrayBuffer: ArrayBuffer) {
 
     if (bytesPerPixel !== 1) {
         throw new Error("TIFF not 8-bit");
+    }
+
+    if (DEBUG) {
+        console.log("readTiff pixelDataOffset", pixelDataOffset);
+        console.log("readTiff pixelCount", pixelCount);
     }
 
     return new DataView(arrayBuffer, pixelDataOffset, pixelCount);

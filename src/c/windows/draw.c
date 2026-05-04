@@ -111,18 +111,15 @@ void draw_radar(
         return;
     }
 
-    if (zoom_level == MAP_ZOOM_LEVEL_CLOSE) {
-        // Draw FAR radar as background, enlarged to match the CLOSE geographic scale
-        draw_radar_layer(
-            layer, ctx,
-            radar_data_cache_get_item(timestep_index, (uint16_t) MAP_ZOOM_LEVEL_FAR),
-            (uint16_t) zoom_level
-        );
-    }
+    draw_radar_layer(
+        layer, ctx,
+        radar_data_cache_get_item(timestep_index, 400),
+        (uint16_t) zoom_level
+    );
 
     draw_radar_layer(
         layer, ctx,
-        radar_data_cache_get_item(timestep_index, (uint16_t) zoom_level),
+        radar_data_cache_get_item(timestep_index, 100),
         (uint16_t) zoom_level
     );
 }
@@ -190,15 +187,14 @@ void draw_circle(const Layer* layer, GContext* ctx, MapZoomLevel zoom_level) {
 void draw_timestep_indicator(
     const Layer* layer,
     GContext* ctx,
-    int timestep_index,
-    MapZoomLevel zoom_level
+    int timestep_index
 ) {
     if (timestep_index < 0) {
         return;
     }
 
     size_t radar_data_item_count =
-        radar_data_cache_get_zoom_level_item_count((uint16_t) zoom_level);
+        radar_data_cache_get_max_item_count();
     if (radar_data_item_count == 0) {
         return;
     }
@@ -217,14 +213,17 @@ void draw_timestep_indicator(
 void draw_timestamp(
     const Layer* layer,
     GContext* ctx,
-    int timestep_index,
-    MapZoomLevel zoom_level
+    int timestep_index
 ) {
     if (timestep_index < 0) {
         return;
     }
 
-    radar_data_t* radar_data = radar_data_cache_get_item(timestep_index, (uint16_t) zoom_level);
+    radar_data_t* radar_data = radar_data_cache_get_item(timestep_index, 400);
+
+    if (radar_data == NULL) {
+        return;
+    }
 
     time_t timestamp = radar_data->timestamp;
     tm* time_info = localtime(&timestamp);

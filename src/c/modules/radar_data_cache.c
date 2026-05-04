@@ -37,7 +37,7 @@ radar_data_t* radar_data_cache_get_item(
     return NULL;
 }
 
-size_t radar_data_cache_get_zoom_level_item_count(uint16_t width_km) {
+size_t radar_data_cache_get_item_count(uint16_t width_km) {
     size_t zoom_level_item_count = 0;
     for (size_t i = 0; i < state.radar_data_cache_size; i++) {
         if (state.radar_data_cache[i] == NULL) {
@@ -52,8 +52,8 @@ size_t radar_data_cache_get_zoom_level_item_count(uint16_t width_km) {
 
 size_t radar_data_cache_get_max_item_count() {
     size_t far_count =
-        radar_data_cache_get_zoom_level_item_count((uint16_t) MAP_ZOOM_LEVEL_FAR);
+        radar_data_cache_get_item_count((uint16_t) MAP_ZOOM_LEVEL_FAR);
     size_t close_count =
-        radar_data_cache_get_zoom_level_item_count((uint16_t) MAP_ZOOM_LEVEL_CLOSE);
+        radar_data_cache_get_item_count((uint16_t) MAP_ZOOM_LEVEL_CLOSE);
     return far_count > close_count ? far_count : close_count;
 }

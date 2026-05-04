@@ -1,6 +1,8 @@
 // src/pkjs/fmi.ts
 import { readTiff } from "./tiff.js";
 
+const DEBUG: boolean = false;
+
 const BASE_URL: string = "https://openwms.fmi.fi/geoserver/Radar/wms";
 
 const CONSTANT_REQUEST_PARAMS: Record<string, string> = {
@@ -74,6 +76,10 @@ export function downloadRadarData(
     const fiveMinutesInMs = 5 * 60 * 1000;
 
     let radarUrl = getRadarUrl(coordinateBounds, widthPx, heightPx, timestamp);
+
+    if (DEBUG) {
+        console.log("downloadRadarData radarUrl:", radarUrl);
+    }
 
     const request = new XMLHttpRequest();
     request.onload = function (this: XMLHttpRequest) {

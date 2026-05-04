@@ -19,13 +19,11 @@ void draw_circle(const Layer* layer, GContext* ctx, MapZoomLevel zoom_level);
 void draw_timestep_indicator(
     const Layer* layer,
     GContext* ctx,
-    int timestep_index,
-    MapZoomLevel zoom_level
+    int timestep_index
 );
 
 void draw_timestamp(
     const Layer* layer,
     GContext* ctx,
-    int timestep_index,
-    MapZoomLevel zoom_level
+    int timestep_index
 );
