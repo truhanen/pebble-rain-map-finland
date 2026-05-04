@@ -6,7 +6,7 @@
 
 radar_data_t* radar_data_init(
     time_t timestamp,
-    MapZoomLevel zoom_level,
+    uint16_t width_km,
     uint16_t width,
     uint16_t height
 );

@@ -45,7 +45,7 @@ size_t get_radar_data_pixel_height(size_t pixel_width) {
 
 radar_data_t* radar_data_init(
     time_t timestamp,
-    MapZoomLevel zoom_level,
+    uint16_t width_km,
     uint16_t width,
     uint16_t height
 ) {
@@ -79,9 +79,9 @@ radar_data_t* radar_data_init(
 
     radar_data->data = data;
     radar_data->timestamp = timestamp;
-    radar_data->zoom_level = zoom_level;
-    radar_data->width = width;
-    radar_data->height = height;
+    radar_data->width_km = width_km;
+    radar_data->width_px = width;
+    radar_data->height_px = height;
 
     return radar_data;
 }
@@ -144,7 +144,7 @@ RainLevel radar_data_get_point_rain_level(
     size_t y,
     size_t x
 ) {
-    size_t point_index = y * radar_data->width + x;
+    size_t point_index = y * radar_data->width_px + x;
 
     size_t bit_index = point_index * RADAR_DATA_BITS_PER_POINT;
     size_t byte_offset = bit_index / 8;

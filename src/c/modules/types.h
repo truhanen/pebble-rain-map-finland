@@ -53,8 +53,8 @@ typedef enum {
 
 typedef struct {
     time_t timestamp;
-    MapZoomLevel zoom_level;
-    uint16_t width;
-    uint16_t height;
+    uint16_t width_km;
+    uint16_t width_px;
+    uint16_t height_px;
     uint8_t* data;
 } radar_data_t;

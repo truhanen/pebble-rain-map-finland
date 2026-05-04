@@ -22,26 +22,39 @@
 #define FONT_SMALL FONT_KEY_GOTHIC_09
 #define FONT_MEDIUM FONT_KEY_GOTHIC_14_BOLD
 
-void draw_radar(
+static void draw_radar_layer(
     const Layer* layer,
     GContext* ctx,
-    int timestep_index,
-    MapZoomLevel zoom_level
+    const radar_data_t* radar_data,
+    uint16_t view_width_km
 ) {
-    if (timestep_index < 0) {
+    if (radar_data == NULL) {
         return;
     }
 
-    radar_data_t* radar_data = radar_data_cache_get_item(timestep_index, zoom_level);
-
     GRect layer_bounds = layer_get_bounds(layer);
 
-    size_t pixels_per_point = layer_bounds.size.w / radar_data->width;
+    // Scale factor: screen pixels per radar data point, enlarged when data covers
+    // more geographic area than the current view (e.g. FAR data in CLOSE view)
+    int32_t pixels_per_point = (int32_t) layer_bounds.size.w * radar_data->width_km /
+                               ((int32_t) radar_data->width_px * view_width_km);
 
-    for (size_t screen_y = 0; screen_y < (size_t) layer_bounds.size.h; screen_y++) {
-        size_t radar_y = screen_y / pixels_per_point;
-        for (size_t screen_x = 0; screen_x < (size_t) layer_bounds.size.w; screen_x++) {
-            size_t radar_x = screen_x / pixels_per_point;
+    // Center the raster on screen (offset is negative when raster overflows screen)
+    int32_t x_offset =
+        ((int32_t) layer_bounds.size.w - (int32_t) radar_data->width_px * pixels_per_point) / 2;
+    int32_t y_offset =
+        ((int32_t) layer_bounds.size.h - (int32_t) radar_data->height_px * pixels_per_point) / 2;
+
+    for (int32_t screen_y = 0; screen_y < (int32_t) layer_bounds.size.h; screen_y++) {
+        int32_t radar_y = (screen_y - y_offset) / pixels_per_point;
+        if (radar_y < 0 || radar_y >= (int32_t) radar_data->height_px) {
+            continue;
+        }
+        for (int32_t screen_x = 0; screen_x < (int32_t) layer_bounds.size.w; screen_x++) {
+            int32_t radar_x = (screen_x - x_offset) / pixels_per_point;
+            if (radar_x < 0 || radar_x >= (int32_t) radar_data->width_px) {
+                continue;
+            }
             RainLevel rain_level =
                 radar_data_get_point_rain_level(radar_data, radar_y, radar_x);
 
@@ -83,10 +96,35 @@ void draw_radar(
 #endif
 
             graphics_context_set_stroke_color(ctx, color);
-
             graphics_draw_pixel(ctx, GPoint(screen_x, screen_y));
         }
     }
+}
+
+void draw_radar(
+    const Layer* layer,
+    GContext* ctx,
+    int timestep_index,
+    MapZoomLevel zoom_level
+) {
+    if (timestep_index < 0) {
+        return;
+    }
+
+    if (zoom_level == MAP_ZOOM_LEVEL_CLOSE) {
+        // Draw FAR radar as background, enlarged to match the CLOSE geographic scale
+        draw_radar_layer(
+            layer, ctx,
+            radar_data_cache_get_item(timestep_index, (uint16_t) MAP_ZOOM_LEVEL_FAR),
+            (uint16_t) zoom_level
+        );
+    }
+
+    draw_radar_layer(
+        layer, ctx,
+        radar_data_cache_get_item(timestep_index, (uint16_t) zoom_level),
+        (uint16_t) zoom_level
+    );
 }
 
 static void draw_text(
@@ -160,7 +198,7 @@ void draw_timestep_indicator(
     }
 
     size_t radar_data_item_count =
-        radar_data_cache_get_zoom_level_item_count(zoom_level);
+        radar_data_cache_get_zoom_level_item_count((uint16_t) zoom_level);
     if (radar_data_item_count == 0) {
         return;
     }
@@ -186,7 +224,7 @@ void draw_timestamp(
         return;
     }
 
-    radar_data_t* radar_data = radar_data_cache_get_item(timestep_index, zoom_level);
+    radar_data_t* radar_data = radar_data_cache_get_item(timestep_index, (uint16_t) zoom_level);
 
     time_t timestamp = radar_data->timestamp;
     tm* time_info = localtime(&timestamp);

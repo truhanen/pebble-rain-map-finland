@@ -13,9 +13,7 @@ static MapZoomLevel s_map_zoom_level = MAP_ZOOM_LEVEL_FAR;
 static int s_timestep_index = -1;
 
 static void update_draw_layer(Layer* layer, GContext* ctx) {
-    size_t radar_data_cache_zoom_level_item_count =
-        radar_data_cache_get_zoom_level_item_count(s_map_zoom_level);
-    if (s_timestep_index < 0 && radar_data_cache_zoom_level_item_count != 0) {
+    if (s_timestep_index < 0 && radar_data_cache_get_max_item_count() > 0) {
         s_timestep_index = 0;
     }
 
@@ -42,13 +40,8 @@ static void window_unload(Window* window) {
 }
 
 void change_magnification() {
-    int zoom_level_close_item_count =
-        (int) radar_data_cache_get_zoom_level_item_count(MAP_ZOOM_LEVEL_CLOSE);
-    if (s_map_zoom_level == MAP_ZOOM_LEVEL_FAR && zoom_level_close_item_count > 0) {
+    if (s_map_zoom_level == MAP_ZOOM_LEVEL_FAR) {
         s_map_zoom_level = MAP_ZOOM_LEVEL_CLOSE;
-        if (s_timestep_index > zoom_level_close_item_count - 1) {
-            s_timestep_index = zoom_level_close_item_count - 1;
-        }
     } else {
         s_map_zoom_level = MAP_ZOOM_LEVEL_FAR;
     }
@@ -57,12 +50,11 @@ void change_magnification() {
 
 void change_timestep_index(int timestep_index_change) {
     int timestep_index_changed = s_timestep_index + timestep_index_change;
-    int radar_data_item_count =
-        (int) radar_data_cache_get_zoom_level_item_count(s_map_zoom_level);
+    int max_item_count = (int) radar_data_cache_get_max_item_count();
     if (timestep_index_changed < 0) {
-        timestep_index_changed = radar_data_item_count - 1;
+        timestep_index_changed = max_item_count - 1;
     }
-    if (timestep_index_changed >= radar_data_item_count) {
+    if (timestep_index_changed >= max_item_count) {
         timestep_index_changed = 0;
     }
     s_timestep_index = timestep_index_changed;

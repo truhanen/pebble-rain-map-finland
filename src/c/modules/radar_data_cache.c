@@ -23,29 +23,37 @@ void radar_data_cache_set_item(radar_data_t* radar_data) {
 
 radar_data_t* radar_data_cache_get_item(
     size_t timestep_index,
-    MapZoomLevel map_zoom_level
+    uint16_t width_km
 ) {
-    size_t map_zoom_level_timestep_index = 0;
+    size_t item_timestep_index = 0;
     for (size_t i = 0; i < state.radar_data_cache_size; i++) {
-        if (state.radar_data_cache[i]->zoom_level == map_zoom_level) {
-            if (map_zoom_level_timestep_index == timestep_index) {
+        if (state.radar_data_cache[i]->width_km == width_km) {
+            if (item_timestep_index == timestep_index) {
                 return state.radar_data_cache[i];
             }
-            map_zoom_level_timestep_index += 1;
+            item_timestep_index += 1;
         }
     }
     return NULL;
 }
 
-size_t radar_data_cache_get_zoom_level_item_count(MapZoomLevel map_zoom_level) {
+size_t radar_data_cache_get_zoom_level_item_count(uint16_t width_km) {
     size_t zoom_level_item_count = 0;
     for (size_t i = 0; i < state.radar_data_cache_size; i++) {
         if (state.radar_data_cache[i] == NULL) {
             break;
         }
-        if (state.radar_data_cache[i]->zoom_level == map_zoom_level) {
+        if (state.radar_data_cache[i]->width_km == width_km) {
             zoom_level_item_count += 1;
         }
     }
     return zoom_level_item_count;
+}
+
+size_t radar_data_cache_get_max_item_count() {
+    size_t far_count =
+        radar_data_cache_get_zoom_level_item_count((uint16_t) MAP_ZOOM_LEVEL_FAR);
+    size_t close_count =
+        radar_data_cache_get_zoom_level_item_count((uint16_t) MAP_ZOOM_LEVEL_CLOSE);
+    return far_count > close_count ? far_count : close_count;
 }

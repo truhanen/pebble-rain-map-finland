@@ -19,10 +19,10 @@ void comm_radar_data_handle_inbox(const DictionaryIterator* dict_iter) {
         Tuple* height_t = dict_find(dict_iter, MESSAGE_KEY_HEIGHT);
         uint16_t height = height_t->value->int32;
 
-        Tuple* zoom_level_t = dict_find(dict_iter, MESSAGE_KEY_ZOOM_LEVEL);
-        MapZoomLevel zoom_level = (MapZoomLevel) zoom_level_t->value->int32;
+        Tuple* width_km_t = dict_find(dict_iter, MESSAGE_KEY_ZOOM_LEVEL);
+        uint16_t width_km = (uint16_t) width_km_t->value->int32;
 
-        s_radar_data = radar_data_init(timestamp, zoom_level, width, height);
+        s_radar_data = radar_data_init(timestamp, width_km, width, height);
 
         log_heap_bytes();
     }
