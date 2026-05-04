@@ -1,7 +1,7 @@
 import { downloadRadarData } from "./fmi";
 import {
     getCoordinateBounds,
-    getCoordinateBoundsForZoomLevel,
+    getCoordinateBoundsForWidthKm,
 } from "./coordinates";
 import { getRadarDataSpec, RADAR_DATA_SPECS } from "./radar_data_specs";
 import { DISPLAY_DIMENSIONS } from "./pebble";
@@ -45,12 +45,12 @@ function transmitRadarDataSpecs(
     successCallback: (radarData: RadarData) => void,
 ) {
     const spec = getRadarDataSpec(specIndex);
-    const coordinateBounds = getCoordinateBoundsForZoomLevel(
+    const coordinateBounds = getCoordinateBoundsForWidthKm(
         coordinateBoundsFar,
-        spec.zoomLevel,
+        spec.widthKm,
     );
     const height =
-        (spec.width * DISPLAY_DIMENSIONS.height) / DISPLAY_DIMENSIONS.width;
+        (spec.widthPx * DISPLAY_DIMENSIONS.height) / DISPLAY_DIMENSIONS.width;
     const minuteInMs = 60 * 1000;
     if (latestTimestamp == null) {
         latestTimestamp = new Date();
@@ -65,18 +65,18 @@ function transmitRadarDataSpecs(
     );
     downloadRadarData(
         coordinateBounds,
-        spec.width,
+        spec.widthPx,
         height,
         timestamp,
-        spec.zoomLevel,
+        spec.widthKm,
         0,
         (radarData) => {
             const specMessage: Record<string, any> = {
                 RADAR_DATA_SPEC: 0,
                 TIMESTAMP: radarData.timestamp.getTime() / 1000,
-                WIDTH: radarData.width,
-                HEIGHT: radarData.height,
-                ZOOM_LEVEL: radarData.zoomLevel,
+                WIDTH_PX: radarData.widthPx,
+                HEIGHT_PX: radarData.heightPx,
+                WIDTH_KM: radarData.widthKm,
             };
             Pebble.sendAppMessage(
                 specMessage,

@@ -15,8 +15,8 @@ const CONSTANT_REQUEST_PARAMS: Record<string, string> = {
 
 function getWmsRequestParams(
     coordinateBounds: CoordinateBounds,
-    width: number,
-    height: number,
+    widthPx: number,
+    heightPx: number,
     timestamp: Date,
 ): Record<string, string> {
     const bbox = [
@@ -30,8 +30,8 @@ function getWmsRequestParams(
     };
 
     requestParams["bbox"] = bbox;
-    requestParams["width"] = String(width);
-    requestParams["height"] = String(height);
+    requestParams["width"] = String(widthPx);
+    requestParams["height"] = String(heightPx);
     requestParams["time"] = timestamp.toISOString();
 
     return requestParams;
@@ -39,14 +39,14 @@ function getWmsRequestParams(
 
 function getRadarUrl(
     coordinateBounds: CoordinateBounds,
-    width: number,
-    height: number,
+    widthPx: number,
+    heightPx: number,
     timestamp: Date,
 ): string {
     const requestParams = getWmsRequestParams(
         coordinateBounds,
-        width,
-        height,
+        widthPx,
+        heightPx,
         timestamp,
     );
 
@@ -64,16 +64,16 @@ function getRadarUrl(
 
 export function downloadRadarData(
     coordinateBounds: CoordinateBounds,
-    width: number,
-    height: number,
+    widthPx: number,
+    heightPx: number,
     timestamp: Date,
-    zoomLevel: MapZoomLevel,
+    widthKm: number,
     retryNumber: number,
     successCallback: (radarData: RadarData) => void,
 ): void {
     const fiveMinutesInMs = 5 * 60 * 1000;
 
-    let radarUrl = getRadarUrl(coordinateBounds, width, height, timestamp);
+    let radarUrl = getRadarUrl(coordinateBounds, widthPx, heightPx, timestamp);
 
     const request = new XMLHttpRequest();
     request.onload = function (this: XMLHttpRequest) {
@@ -89,10 +89,10 @@ export function downloadRadarData(
                 timestamp = new Date(timestamp.getTime() - fiveMinutesInMs);
                 downloadRadarData(
                     coordinateBounds,
-                    width,
-                    height,
+                    widthPx,
+                    heightPx,
                     timestamp,
-                    zoomLevel,
+                    widthKm,
                     retryNumber,
                     successCallback,
                 );
@@ -105,10 +105,10 @@ export function downloadRadarData(
             const dataView = readTiff(this.response);
             const radarData: RadarData = {
                 dataView,
-                width,
-                height,
+                widthPx,
+                heightPx,
                 timestamp,
-                zoomLevel,
+                widthKm,
             };
             successCallback(radarData);
         }

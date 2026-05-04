@@ -7,8 +7,8 @@
 radar_data_t* radar_data_init(
     time_t timestamp,
     uint16_t width_km,
-    uint16_t width,
-    uint16_t height
+    uint16_t width_px,
+    uint16_t height_px
 );
 
 void radar_data_deinit(const radar_data_t* radar_data);

@@ -46,10 +46,10 @@ size_t get_radar_data_pixel_height(size_t pixel_width) {
 radar_data_t* radar_data_init(
     time_t timestamp,
     uint16_t width_km,
-    uint16_t width,
-    uint16_t height
+    uint16_t width_px,
+    uint16_t height_px
 ) {
-    size_t point_count = width * height;
+    size_t point_count = width_px * height_px;
     size_t bit_count = RADAR_DATA_BITS_PER_POINT * point_count;
     // Calculate the minimum number of bytes required, plus one extra byte
     size_t byte_count = (bit_count + 7) / 8 + 1;
@@ -80,8 +80,8 @@ radar_data_t* radar_data_init(
     radar_data->data = data;
     radar_data->timestamp = timestamp;
     radar_data->width_km = width_km;
-    radar_data->width_px = width;
-    radar_data->height_px = height;
+    radar_data->width_px = width_px;
+    radar_data->height_px = height_px;
 
     return radar_data;
 }

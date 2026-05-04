@@ -1,79 +1,83 @@
 import { DISPLAY_DIMENSIONS } from "./pebble";
 
-const PIXEL_WIDTH_1 = DISPLAY_DIMENSIONS.width;
-const PIXEL_WIDTH_2 = DISPLAY_DIMENSIONS.width / 2;
-const PIXEL_WIDTH_3 = DISPLAY_DIMENSIONS.width / 4;
+const DISPLAY_WIDTH_KM_ZOOM_LEVEL_FAR = 400;
+
+const WIDTH_KM_SMALL = 50;
+const WIDTH_KM_LARGE = DISPLAY_WIDTH_KM_ZOOM_LEVEL_FAR;
+
+const WIDTH_PX_SMALL = DISPLAY_DIMENSIONS.width * (WIDTH_KM_SMALL / WIDTH_KM_LARGE);
+const WIDTH_PX_LARGE = DISPLAY_DIMENSIONS.width / 4;
 
 export const RADAR_DATA_SPECS: RadarDataSpec[] = [
     {
         minutesBeforeLatest: 0,
-        width: PIXEL_WIDTH_2,
-        zoomLevel: MapZoomLevel.Far,
+        widthPx: WIDTH_PX_LARGE,
+        widthKm: WIDTH_KM_LARGE,
     },
     {
         minutesBeforeLatest: 0,
-        width: PIXEL_WIDTH_1,
-        zoomLevel: MapZoomLevel.Close,
+        widthPx: WIDTH_PX_SMALL,
+        widthKm: WIDTH_KM_SMALL,
     },
     {
         minutesBeforeLatest: 10,
-        width: PIXEL_WIDTH_2,
-        zoomLevel: MapZoomLevel.Far,
+        widthPx: WIDTH_PX_LARGE,
+        widthKm: WIDTH_KM_LARGE,
     },
     {
         minutesBeforeLatest: 10,
-        width: PIXEL_WIDTH_1,
-        zoomLevel: MapZoomLevel.Close,
+        widthPx: WIDTH_PX_SMALL,
+        widthKm: WIDTH_KM_SMALL,
     },
     {
         minutesBeforeLatest: 20,
-        width: PIXEL_WIDTH_2,
-        zoomLevel: MapZoomLevel.Far,
+        widthPx: WIDTH_PX_LARGE,
+        widthKm: WIDTH_KM_LARGE,
     },
     {
         minutesBeforeLatest: 20,
-        width: PIXEL_WIDTH_2,
-        zoomLevel: MapZoomLevel.Close,
+        widthPx: WIDTH_PX_SMALL,
+        widthKm: WIDTH_KM_SMALL,
     },
     {
         minutesBeforeLatest: 30,
-        width: PIXEL_WIDTH_3,
-        zoomLevel: MapZoomLevel.Far,
+        widthPx: WIDTH_PX_LARGE,
+        widthKm: WIDTH_KM_LARGE,
     },
     {
         minutesBeforeLatest: 30,
-        width: PIXEL_WIDTH_2,
-        zoomLevel: MapZoomLevel.Close,
+        widthPx: WIDTH_PX_SMALL,
+        widthKm: WIDTH_KM_SMALL,
     },
     {
         minutesBeforeLatest: 40,
-        width: PIXEL_WIDTH_3,
-        zoomLevel: MapZoomLevel.Far,
+        widthPx: WIDTH_PX_LARGE,
+        widthKm: WIDTH_KM_LARGE,
     },
     {
         minutesBeforeLatest: 40,
-        width: PIXEL_WIDTH_3,
-        zoomLevel: MapZoomLevel.Close,
+        widthPx: WIDTH_PX_SMALL,
+        widthKm: WIDTH_KM_SMALL,
     },
     {
         minutesBeforeLatest: 50,
-        width: PIXEL_WIDTH_3,
-        zoomLevel: MapZoomLevel.Far,
+        widthPx: WIDTH_PX_LARGE,
+        widthKm: WIDTH_KM_LARGE,
     },
     {
         minutesBeforeLatest: 50,
-        width: PIXEL_WIDTH_3,
-        zoomLevel: MapZoomLevel.Close,
+        widthPx: WIDTH_PX_SMALL,
+        widthKm: WIDTH_KM_SMALL,
     },
     {
         minutesBeforeLatest: 60,
-        width: PIXEL_WIDTH_3,
-        zoomLevel: MapZoomLevel.Far,
+        widthPx: WIDTH_PX_LARGE,
+        widthKm: WIDTH_KM_LARGE,
     },
     {
         minutesBeforeLatest: 60,
-        width: PIXEL_WIDTH_3,
-        zoomLevel: MapZoomLevel.Close,
+        widthPx: WIDTH_PX_SMALL,
+        widthKm: WIDTH_KM_SMALL,
     },
 ];
 

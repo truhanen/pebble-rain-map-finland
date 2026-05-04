@@ -3,6 +3,8 @@ import { DISPLAY_DIMENSIONS } from "./pebble";
 
 const KM_PER_LATITUDE_DEGREE: number = 111.32;
 
+const DEBUG: boolean = false;
+
 const DEFAULT_COORDINATES: Coordinates = {
     latitude: 62.24247205261152,
     longitude: 25.748024833006454,
@@ -46,6 +48,11 @@ export function calcCoordinateBounds(
 function getLocation(
     successCallback: (coordinates: Coordinates) => void,
 ): void {
+    if (DEBUG) {
+        successCallback(DEFAULT_COORDINATES);
+        return;
+    }
+
     if (typeof navigator === "undefined" || !navigator.geolocation) {
         console.log("Geolocation not available, using default location");
         successCallback(DEFAULT_COORDINATES);
@@ -70,7 +77,7 @@ function getLocation(
 export function getCoordinateBounds(
     successCallback: (bounds: CoordinateBounds) => void,
 ) {
-    const longitudeRangeKm = MapZoomLevel.Far;
+    const longitudeRangeKm = 400;
     const latitudeRangeKm =
         (longitudeRangeKm * DISPLAY_DIMENSIONS.height) /
         DISPLAY_DIMENSIONS.width;
@@ -84,31 +91,31 @@ export function getCoordinateBounds(
     });
 }
 
-export function getCoordinateBoundsForZoomLevel(
-    coordinateBoundsFar: CoordinateBounds,
-    zoomLevel: MapZoomLevel,
+export function getCoordinateBoundsForWidthKm(
+    coordinateBounds400: CoordinateBounds,
+    widthKm: number,
 ): CoordinateBounds {
-    let bounds = coordinateBoundsFar;
-    if (zoomLevel == MapZoomLevel.Close) {
+    let bounds = coordinateBounds400;
+    if (widthKm != 400) {
         const latitude =
-            (coordinateBoundsFar.latitudeMin +
-                coordinateBoundsFar.latitudeMax) /
+            (coordinateBounds400.latitudeMin +
+                coordinateBounds400.latitudeMax) /
             2;
         const longitude =
-            (coordinateBoundsFar.longitudeMin +
-                coordinateBoundsFar.longitudeMax) /
+            (coordinateBounds400.longitudeMin +
+                coordinateBounds400.longitudeMax) /
             2;
-        const zoomLevelCloseFactor = MapZoomLevel.Far / MapZoomLevel.Close;
-        const latitude_radius_close =
-            (latitude - coordinateBoundsFar.latitudeMin) / zoomLevelCloseFactor;
-        const longitude_radius_close =
-            (longitude - coordinateBoundsFar.longitudeMin) /
-            zoomLevelCloseFactor;
+        const scaleFactor = 400 / widthKm;
+        const latitude_radius_scaled =
+            (latitude - coordinateBounds400.latitudeMin) / scaleFactor;
+        const longitude_radius_scaled =
+            (longitude - coordinateBounds400.longitudeMin) /
+            scaleFactor;
         bounds = {
-            longitudeMin: longitude - longitude_radius_close,
-            longitudeMax: longitude + longitude_radius_close,
-            latitudeMin: latitude - latitude_radius_close,
-            latitudeMax: latitude + latitude_radius_close,
+            longitudeMin: longitude - longitude_radius_scaled,
+            longitudeMax: longitude + longitude_radius_scaled,
+            latitudeMin: latitude - latitude_radius_scaled,
+            latitudeMax: latitude + latitude_radius_scaled,
         };
     }
     return bounds;

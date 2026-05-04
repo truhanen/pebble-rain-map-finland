@@ -13,16 +13,16 @@ void comm_radar_data_handle_inbox(const DictionaryIterator* dict_iter) {
         Tuple* timestamp_t = dict_find(dict_iter, MESSAGE_KEY_TIMESTAMP);
         time_t timestamp = timestamp_t->value->int32;
 
-        Tuple* width_t = dict_find(dict_iter, MESSAGE_KEY_WIDTH);
-        uint16_t width = width_t->value->int32;
+        Tuple* width_px_t = dict_find(dict_iter, MESSAGE_KEY_WIDTH_PX);
+        uint16_t width_px = width_px_t->value->int32;
 
-        Tuple* height_t = dict_find(dict_iter, MESSAGE_KEY_HEIGHT);
-        uint16_t height = height_t->value->int32;
+        Tuple* height_px_t = dict_find(dict_iter, MESSAGE_KEY_HEIGHT_PX);
+        uint16_t height_px = height_px_t->value->int32;
 
-        Tuple* width_km_t = dict_find(dict_iter, MESSAGE_KEY_ZOOM_LEVEL);
+        Tuple* width_km_t = dict_find(dict_iter, MESSAGE_KEY_WIDTH_KM);
         uint16_t width_km = (uint16_t) width_km_t->value->int32;
 
-        s_radar_data = radar_data_init(timestamp, width_km, width, height);
+        s_radar_data = radar_data_init(timestamp, width_km, width_px, height_px);
 
         log_heap_bytes();
     }

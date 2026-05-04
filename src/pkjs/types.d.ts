@@ -25,22 +25,16 @@ interface CoordinateBounds {
     latitudeMax: number;
 }
 
-// Values are widths in kilometers
-const enum MapZoomLevel {
-    Close = 200,
-    Far = 400,
-}
-
 interface RadarDataSpec {
     minutesBeforeLatest: number;
-    width: number;
-    zoomLevel: MapZoomLevel;
+    widthPx: number;
+    widthKm: number;
 }
 
 interface RadarData {
     dataView: DataView;
-    width: number;
-    height: number;
+    widthPx: number;
+    heightPx: number;
     timestamp: Date;
-    zoomLevel: MapZoomLevel;
+    widthKm: number;
 }
