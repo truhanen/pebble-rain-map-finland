@@ -4,6 +4,7 @@ import {
     getCoordinateBoundsForWidthKm,
 } from "./coordinates";
 import { getRadarDataSpec, RADAR_DATA_SPECS } from "./radar_data_specs";
+import { DISPLAY_DIMENSIONS } from "./pebble";
 
 const DEBUG: boolean = false;
 
@@ -48,7 +49,13 @@ function transmitRadarDataSpecs(
         coordinateBoundsFar,
         spec.widthKm,
     );
-    const heightPx = spec.widthPx;
+    var heightPx: number;
+    if (spec.isSquare) {
+        heightPx = spec.widthPx;
+    }
+    else {
+        heightPx = (spec.widthPx * DISPLAY_DIMENSIONS.height) / DISPLAY_DIMENSIONS.width;
+    }
     const minuteInMs = 60 * 1000;
     if (latestTimestamp == null) {
         latestTimestamp = new Date();
