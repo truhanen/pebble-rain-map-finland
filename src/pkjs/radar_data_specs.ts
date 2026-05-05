@@ -6,12 +6,13 @@ const WIDTH_KM_SMALL = 100;
 const WIDTH_KM_LARGE = DISPLAY_WIDTH_KM_ZOOM_LEVEL_FAR;
 
 const WIDTH_PX_SMALL = DISPLAY_DIMENSIONS.width * (WIDTH_KM_SMALL / WIDTH_KM_LARGE);
-const WIDTH_PX_LARGE = DISPLAY_DIMENSIONS.width / 4;
+const WIDTH_PX_LARGE_1 = DISPLAY_DIMENSIONS.width / 2;
+const WIDTH_PX_LARGE_2 = DISPLAY_DIMENSIONS.width / 4;
 
 export const RADAR_DATA_SPECS: RadarDataSpec[] = [
     {
         minutesBeforeLatest: 0,
-        widthPx: WIDTH_PX_LARGE,
+        widthPx: WIDTH_PX_LARGE_1,
         widthKm: WIDTH_KM_LARGE,
         isSquare: false,
     },
@@ -23,7 +24,7 @@ export const RADAR_DATA_SPECS: RadarDataSpec[] = [
     },
     {
         minutesBeforeLatest: 10,
-        widthPx: WIDTH_PX_LARGE,
+        widthPx: WIDTH_PX_LARGE_1,
         widthKm: WIDTH_KM_LARGE,
         isSquare: false,
     },
@@ -35,7 +36,7 @@ export const RADAR_DATA_SPECS: RadarDataSpec[] = [
     },
     {
         minutesBeforeLatest: 20,
-        widthPx: WIDTH_PX_LARGE,
+        widthPx: WIDTH_PX_LARGE_2,
         widthKm: WIDTH_KM_LARGE,
         isSquare: false,
     },
@@ -47,7 +48,7 @@ export const RADAR_DATA_SPECS: RadarDataSpec[] = [
     },
     {
         minutesBeforeLatest: 30,
-        widthPx: WIDTH_PX_LARGE,
+        widthPx: WIDTH_PX_LARGE_2,
         widthKm: WIDTH_KM_LARGE,
         isSquare: false,
     },
@@ -59,7 +60,7 @@ export const RADAR_DATA_SPECS: RadarDataSpec[] = [
     },
     {
         minutesBeforeLatest: 40,
-        widthPx: WIDTH_PX_LARGE,
+        widthPx: WIDTH_PX_LARGE_2,
         widthKm: WIDTH_KM_LARGE,
         isSquare: false,
     },
@@ -71,7 +72,7 @@ export const RADAR_DATA_SPECS: RadarDataSpec[] = [
     },
     {
         minutesBeforeLatest: 50,
-        widthPx: WIDTH_PX_LARGE,
+        widthPx: WIDTH_PX_LARGE_2,
         widthKm: WIDTH_KM_LARGE,
         isSquare: false,
     },
@@ -83,7 +84,7 @@ export const RADAR_DATA_SPECS: RadarDataSpec[] = [
     },
     {
         minutesBeforeLatest: 60,
-        widthPx: WIDTH_PX_LARGE,
+        widthPx: WIDTH_PX_LARGE_2,
         widthKm: WIDTH_KM_LARGE,
         isSquare: false,
     },
