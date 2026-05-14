@@ -187,15 +187,15 @@ void draw_circle(const Layer* layer, GContext* ctx, MapZoomLevel zoom_level) {
         circle_radius * 2
     );
 
-    int32_t angle_start = 25;
-    int32_t angle_end = 335;
+    int32_t angle_start = 205;
+    int32_t angle_end = 515;
     // Less angle is needed for the text when magnified
     if (zoom_level == MAP_ZOOM_LEVEL_CLOSE) {
-        angle_start = 10;
-        angle_end = 350;
+        angle_start = 192;
+        angle_end = 528;
     } else if (zoom_level == MAP_ZOOM_LEVEL_CLOSEST) {
-        angle_start = 5;
-        angle_end = 355;
+        angle_start = 186;
+        angle_end = 534;
     }
 
     graphics_context_set_stroke_color(ctx, COLOR_DRAW_FOREGROUND);
@@ -208,7 +208,7 @@ void draw_circle(const Layer* layer, GContext* ctx, MapZoomLevel zoom_level) {
         DEG_TO_TRIGANGLE(angle_end)
     );
 
-    GRect text_rect = GRect(0, circle_rect.origin.y - 6, layer_bounds.size.w, 10);
+    GRect text_rect = GRect(0, circle_rect.origin.y + circle_rect.size.h - 6, layer_bounds.size.w, 10);
 
     draw_text(
         ctx, "50km", text_rect, fonts_get_system_font(FONT_SMALL), GTextAlignmentCenter
