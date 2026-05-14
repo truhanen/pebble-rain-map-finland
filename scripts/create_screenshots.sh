@@ -42,6 +42,10 @@ btn down;   ss "down_3"
 btn down;   ss "down_4"
 btn down;   ss "down_5"
 btn down;   ss "down_6"
+ss "before_back"
+btn back; ss "back_1"
+btn back; ss "back_2"
+ss "end"
 
 echo "Done. Screenshots saved to $PNG_DIR/"
 
