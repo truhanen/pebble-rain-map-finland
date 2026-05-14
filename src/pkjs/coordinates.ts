@@ -6,8 +6,17 @@ const KM_PER_LATITUDE_DEGREE: number = 111.32;
 const DEBUG: boolean = false;
 
 const DEFAULT_COORDINATES: Coordinates = {
-    latitude: 62.24247205261152,
-    longitude: 25.748024833006454,
+    // Jyväskylä
+    // latitude: 62.2425,
+    // longitude: 25.7480,
+
+    // Joensuu
+    // latitude: 62.6011,
+    // longitude: 29.7636,
+
+    // Rovaniemi
+    latitude: 66.5039,
+    longitude: 25.7294,
 };
 
 const OPTIONS: PositionOptions = {
