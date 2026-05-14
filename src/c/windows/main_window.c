@@ -40,15 +40,25 @@ static void window_unload(Window* window) {
     window_destroy(window);
 }
 
-void change_magnification() {
+void zoom_closer() {
     if (s_map_zoom_level == MAP_ZOOM_LEVEL_FAR) {
         s_map_zoom_level = MAP_ZOOM_LEVEL_CLOSE;
     } else if (s_map_zoom_level == MAP_ZOOM_LEVEL_CLOSE) {
         s_map_zoom_level = MAP_ZOOM_LEVEL_CLOSEST;
-    } else {
-        s_map_zoom_level = MAP_ZOOM_LEVEL_FAR;
     }
     main_window_update();
+}
+
+void zoom_farther() {
+    if (s_map_zoom_level == MAP_ZOOM_LEVEL_CLOSEST) {
+        s_map_zoom_level = MAP_ZOOM_LEVEL_CLOSE;
+        main_window_update();
+    } else if (s_map_zoom_level == MAP_ZOOM_LEVEL_CLOSE) {
+        s_map_zoom_level = MAP_ZOOM_LEVEL_FAR;
+        main_window_update();
+    } else {
+        window_stack_pop(true);
+    }
 }
 
 void change_timestep_index(int timestep_index_change) {
@@ -66,7 +76,11 @@ void change_timestep_index(int timestep_index_change) {
 }
 
 void select_single_click_handler(ClickRecognizerRef recognizer, void* context) {
-    change_magnification();
+    zoom_closer();
+}
+
+void back_single_click_handler(ClickRecognizerRef recognizer, void* context) {
+    zoom_farther();
 }
 
 void up_single_click_handler(ClickRecognizerRef recognizer, void* context) {
@@ -79,6 +93,7 @@ void down_single_click_handler(ClickRecognizerRef recognizer, void* context) {
 
 void click_config_provider(Window* window) {
     window_single_click_subscribe(BUTTON_ID_SELECT, select_single_click_handler);
+    window_single_click_subscribe(BUTTON_ID_BACK, back_single_click_handler);
     window_single_click_subscribe(BUTTON_ID_UP, up_single_click_handler);
     window_single_click_subscribe(BUTTON_ID_DOWN, down_single_click_handler);
 }
