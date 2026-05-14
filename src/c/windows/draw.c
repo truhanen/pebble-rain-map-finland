@@ -215,6 +215,25 @@ void draw_circle(const Layer* layer, GContext* ctx, MapZoomLevel zoom_level) {
     );
 }
 
+void draw_crosshair(const Layer* layer, GContext* ctx) {
+    GRect bounds = layer_get_bounds(layer);
+    GPoint center = GPoint(bounds.size.w / 2, bounds.size.h / 2);
+
+    int arm = 15;
+    int hole = 9;
+
+    graphics_context_set_stroke_color(ctx, COLOR_DRAW_FOREGROUND);
+    graphics_context_set_stroke_width(ctx, 1);
+
+    // Horizontal arms
+    graphics_draw_line(ctx, GPoint(center.x - arm, center.y), GPoint(center.x - hole, center.y));
+    graphics_draw_line(ctx, GPoint(center.x + hole, center.y), GPoint(center.x + arm, center.y));
+
+    // Vertical arms
+    graphics_draw_line(ctx, GPoint(center.x, center.y - arm), GPoint(center.x, center.y - hole));
+    graphics_draw_line(ctx, GPoint(center.x, center.y + hole), GPoint(center.x, center.y + arm));
+}
+
 void draw_timestep_indicator(
     const Layer* layer,
     GContext* ctx,

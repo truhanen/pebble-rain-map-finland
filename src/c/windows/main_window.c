@@ -20,6 +20,7 @@ static void update_draw_layer(Layer* layer, GContext* ctx) {
     draw_radar(layer, ctx, s_timestep_index, s_map_zoom_level);
     draw_map(layer, ctx, s_map_zoom_level);
     draw_circle(layer, ctx, s_map_zoom_level);
+    draw_crosshair(layer, ctx);
     draw_timestep_indicator(layer, ctx, s_timestep_index);
     draw_timestamp(layer, ctx, s_timestep_index);
 }

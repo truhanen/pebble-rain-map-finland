@@ -16,6 +16,8 @@ void draw_radar(
 
 void draw_circle(const Layer* layer, GContext* ctx, MapZoomLevel zoom_level);
 
+void draw_crosshair(const Layer* layer, GContext* ctx);
+
 void draw_timestep_indicator(
     const Layer* layer,
     GContext* ctx,
