@@ -14,6 +14,10 @@ install: build
 logs:
 	pebble logs --emulator ${PEBBLE_EMULATOR}
 
+.PHONY: create_screenshots
+create_screenshots:
+	./scripts/create_screenshots.sh
+
 .PHONY: clean_pebble
 clean_pebble:
 	pebble clean
