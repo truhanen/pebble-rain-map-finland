@@ -56,8 +56,10 @@ GPoint location_to_gpoint(
     coordinate_bounds_t coordinate_bounds;
     if (zoom_level == MAP_ZOOM_LEVEL_FAR) {
         coordinate_bounds = state.coordinate_bounds_far;
-    } else {
+    } else if (zoom_level == MAP_ZOOM_LEVEL_CLOSE) {
         coordinate_bounds = state.coordinate_bounds_close;
+    } else {
+        coordinate_bounds = state.coordinate_bounds_closest;
     }
 
     int32_t longitude_range =

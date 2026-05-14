@@ -125,19 +125,31 @@ void draw_radar(
         return;
     }
 
-    draw_radar_layer(
-        layer, ctx,
-        radar_data_cache_get_item(timestep_index, 400),
-        (uint16_t) zoom_level,
-        false
-    );
+    int widths_km_closest[] = {100};
+    int widths_km_close[] = {400, 100};
+    int widths_km_far[] = {400, 100};
+    int* widths_km;
+    int n_widths;
 
-    draw_radar_layer(
-        layer, ctx,
-        radar_data_cache_get_item(timestep_index, 100),
-        (uint16_t) zoom_level,
-        true
-    );
+    if (zoom_level == MAP_ZOOM_LEVEL_CLOSEST) {
+        widths_km = widths_km_closest;
+        n_widths = 1;
+    } else if (zoom_level == MAP_ZOOM_LEVEL_CLOSE) {
+        widths_km = widths_km_close;
+        n_widths = 2;
+    } else {
+        widths_km = widths_km_far;
+        n_widths = 2;
+    }
+
+    for (int i = 0; i < n_widths; i++) {
+        draw_radar_layer(
+            layer, ctx,
+            radar_data_cache_get_item(timestep_index, widths_km[i]),
+            (uint16_t) zoom_level,
+            i != 0
+        );
+    }
 }
 
 static void draw_text(
@@ -181,6 +193,9 @@ void draw_circle(const Layer* layer, GContext* ctx, MapZoomLevel zoom_level) {
     if (zoom_level == MAP_ZOOM_LEVEL_CLOSE) {
         angle_start = 10;
         angle_end = 350;
+    } else if (zoom_level == MAP_ZOOM_LEVEL_CLOSEST) {
+        angle_start = 5;
+        angle_end = 355;
     }
 
     graphics_context_set_stroke_color(ctx, COLOR_DRAW_FOREGROUND);

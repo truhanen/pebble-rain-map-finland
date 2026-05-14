@@ -8,6 +8,7 @@
 typedef struct {
     coordinate_bounds_t coordinate_bounds_far;
     coordinate_bounds_t coordinate_bounds_close;
+    coordinate_bounds_t coordinate_bounds_closest;
     radar_data_t** radar_data_cache;
     size_t radar_data_cache_size;
 } state_t;

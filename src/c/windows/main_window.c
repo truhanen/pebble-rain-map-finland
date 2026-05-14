@@ -42,6 +42,8 @@ static void window_unload(Window* window) {
 void change_magnification() {
     if (s_map_zoom_level == MAP_ZOOM_LEVEL_FAR) {
         s_map_zoom_level = MAP_ZOOM_LEVEL_CLOSE;
+    } else if (s_map_zoom_level == MAP_ZOOM_LEVEL_CLOSE) {
+        s_map_zoom_level = MAP_ZOOM_LEVEL_CLOSEST;
     } else {
         s_map_zoom_level = MAP_ZOOM_LEVEL_FAR;
     }

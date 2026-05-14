@@ -29,7 +29,6 @@ interface RadarDataSpec {
     minutesBeforeLatest: number;
     widthPx: number;
     widthKm: number;
-    isSquare: boolean;
 }
 
 interface RadarData {

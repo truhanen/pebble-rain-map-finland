@@ -47,6 +47,7 @@ typedef struct {
  * Values are widths in kilometers
  */
 typedef enum {
+    MAP_ZOOM_LEVEL_CLOSEST = 100,
     MAP_ZOOM_LEVEL_CLOSE = 200,
     MAP_ZOOM_LEVEL_FAR = 400,
 } MapZoomLevel;
