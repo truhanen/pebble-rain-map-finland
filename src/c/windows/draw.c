@@ -125,18 +125,18 @@ void draw_radar(
         return;
     }
 
-    int widths_km_closest[] = {100};
-    int widths_km_close[] = {400, 100};
+    int widths_km_closest[] = {100, 50};
+    int widths_km_close[] = {400, 100, 50};
     int widths_km_far[] = {400, 100};
     int* widths_km;
     int n_widths;
 
     if (zoom_level == MAP_ZOOM_LEVEL_CLOSEST) {
         widths_km = widths_km_closest;
-        n_widths = 1;
+        n_widths = 2;
     } else if (zoom_level == MAP_ZOOM_LEVEL_CLOSE) {
         widths_km = widths_km_close;
-        n_widths = 2;
+        n_widths = 3;
     } else {
         widths_km = widths_km_far;
         n_widths = 2;
