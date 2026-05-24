@@ -1,5 +1,5 @@
 PEBBLE_EMULATOR ?= emery  # Pebble Time 2
-PEBBLE_SDK ?= 4.9.148
+PEBBLE_SDK ?= 4.9.169
 
 # This may need to be run multiple times to succeed due to some initially
 # missing file issues
