@@ -12,7 +12,7 @@ install: build
 
 .PHONY: logs
 logs:
-	pebble logs --emulator ${PEBBLE_EMULATOR}
+	PYTHONUNBUFFERED=1 pebble logs -vvvv --emulator ${PEBBLE_EMULATOR}
 
 .PHONY: create_screenshots
 create_screenshots:
