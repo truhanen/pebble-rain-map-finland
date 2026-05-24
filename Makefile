@@ -9,7 +9,7 @@ build:
 
 .PHONY: install
 install: build
-	pebble install -vv --emulator $(PEBBLE_EMULATOR) --sdk $(PEBBLE_SDK)
+	pebble install -vv --throttle --emulator $(PEBBLE_EMULATOR) --sdk $(PEBBLE_SDK)
 
 .PHONY: logs
 logs:
