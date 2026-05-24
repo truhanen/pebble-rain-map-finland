@@ -15,8 +15,12 @@ const DEFAULT_COORDINATES: Coordinates = {
     // longitude: 29.7636,
 
     // Rovaniemi
-    latitude: 66.5039,
-    longitude: 25.7294,
+    // latitude: 66.5039,
+    // longitude: 25.7294,
+
+    // Vaasa
+    latitude: 63.0951,
+    longitude: 21.6165,
 };
 
 const OPTIONS: PositionOptions = {
