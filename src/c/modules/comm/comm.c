@@ -21,14 +21,17 @@ void request_transmit() {
 
 static void inbox_received_handler(DictionaryIterator* dict_iter, void* context) {
     if (dict_find(dict_iter, MESSAGE_KEY_JS_READY)) {
+        APP_LOG(APP_LOG_LEVEL_DEBUG, "Message receive succeeded: MESSAGE_KEY_JS_READY");
         request_transmit();
     } else if (dict_find(dict_iter, MESSAGE_KEY_COORDINATES)) {
+        APP_LOG(APP_LOG_LEVEL_DEBUG, "Message receive succeeded: MESSAGE_KEY_COORDINATES");
         comm_coordinates_handle_inbox(dict_iter);
     } else if (
         dict_find(dict_iter, MESSAGE_KEY_RADAR_DATA_SPEC) ||
         dict_find(dict_iter, MESSAGE_KEY_RADAR_DATA_CHUNK) ||
         dict_find(dict_iter, MESSAGE_KEY_RADAR_DATA_TRANSMIT_COMPLETE)
     ) {
+        APP_LOG(APP_LOG_LEVEL_DEBUG, "Message receive succeeded: MESSAGE_KEY_RADAR_DATA_*");
         comm_radar_data_handle_inbox(dict_iter);
     }
 }
@@ -57,5 +60,8 @@ void comm_init() {
 
     uint32_t inbox_size = app_message_inbox_size_maximum();
     uint32_t outbox_size = 256;
+
+    APP_LOG(APP_LOG_LEVEL_DEBUG, "inbox_size: %u", inbox_size);
+
     app_message_open(inbox_size, outbox_size);
 }

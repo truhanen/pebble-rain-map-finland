@@ -163,6 +163,10 @@ function transmitRadarData(
         return;
     }
 
+    if (DEBUG) {
+        console.log("transmitRadarData chunkStartIndex", chunkStartIndex);
+    }
+
     const chunk: RadarDataChunk = getRadarDataChunk(
         radarData.dataView,
         chunkStartIndex,
@@ -172,6 +176,11 @@ function transmitRadarData(
         RADAR_DATA_CHUNK_SIZE: chunk.size,
         RADAR_DATA_CHUNK_START_INDEX: chunkStartIndex,
     };
+
+    if (DEBUG) {
+        console.log("transmitRadarData chunk.size", chunk.size);
+    }
+
     Pebble.sendAppMessage(
         chunkMessage,
         () => {
