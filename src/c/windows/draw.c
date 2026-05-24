@@ -221,17 +221,58 @@ void draw_crosshair(const Layer* layer, GContext* ctx) {
 
     int arm = 15;
     int hole = 9;
+    int half_base = 1;
 
     graphics_context_set_stroke_color(ctx, COLOR_DRAW_FOREGROUND);
-    graphics_context_set_stroke_width(ctx, 1);
+    // graphics_context_set_fill_color(ctx, COLOR_DRAW_FOREGROUND);
 
-    // Horizontal arms
-    graphics_draw_line(ctx, GPoint(center.x - arm, center.y), GPoint(center.x - hole, center.y));
-    graphics_draw_line(ctx, GPoint(center.x + hole, center.y), GPoint(center.x + arm, center.y));
+    // Left triangle (pointing right toward center)
+    GPoint left_points[] = {
+        GPoint(center.x - hole, center.y),
+        GPoint(center.x - arm, center.y - half_base),
+        GPoint(center.x - arm, center.y + half_base),
+    };
+    GPathInfo left_info = { .num_points = 3, .points = left_points };
+    GPath* left_path = gpath_create(&left_info);
+    gpath_draw_outline(ctx, left_path);
+    // gpath_draw_filled(ctx, left_path);
+    gpath_destroy(left_path);
 
-    // Vertical arms
-    graphics_draw_line(ctx, GPoint(center.x, center.y - arm), GPoint(center.x, center.y - hole));
-    graphics_draw_line(ctx, GPoint(center.x, center.y + hole), GPoint(center.x, center.y + arm));
+    // Right triangle (pointing left toward center)
+    GPoint right_points[] = {
+        GPoint(center.x + hole, center.y),
+        GPoint(center.x + arm, center.y - half_base),
+        GPoint(center.x + arm, center.y + half_base),
+    };
+    GPathInfo right_info = { .num_points = 3, .points = right_points };
+    GPath* right_path = gpath_create(&right_info);
+    gpath_draw_outline(ctx, right_path);
+    // gpath_draw_filled(ctx, right_path);
+    gpath_destroy(right_path);
+
+    // Top triangle (pointing down toward center)
+    GPoint top_points[] = {
+        GPoint(center.x, center.y - hole),
+        GPoint(center.x - half_base, center.y - arm),
+        GPoint(center.x + half_base, center.y - arm),
+    };
+    GPathInfo top_info = { .num_points = 3, .points = top_points };
+    GPath* top_path = gpath_create(&top_info);
+    gpath_draw_outline(ctx, top_path);
+    // gpath_draw_filled(ctx, top_path);
+    gpath_destroy(top_path);
+
+    // Bottom triangle (pointing up toward center)
+    GPoint bottom_points[] = {
+        GPoint(center.x, center.y + hole),
+        GPoint(center.x - half_base, center.y + arm),
+        GPoint(center.x + half_base, center.y + arm),
+    };
+    GPathInfo bottom_info = { .num_points = 3, .points = bottom_points };
+    GPath* bottom_path = gpath_create(&bottom_info);
+    gpath_draw_outline(ctx, bottom_path);
+    // gpath_draw_filled(ctx, bottom_path);
+    gpath_destroy(bottom_path);
 }
 
 void draw_timestep_indicator(
