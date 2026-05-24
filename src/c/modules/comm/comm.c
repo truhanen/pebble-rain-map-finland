@@ -33,9 +33,28 @@ static void inbox_received_handler(DictionaryIterator* dict_iter, void* context)
     }
 }
 
+static void inbox_dropped_callback(AppMessageResult reason, void *context) {
+    APP_LOG(APP_LOG_LEVEL_ERROR, "Message receive failed (dropped). Reason: %d", (int)reason);
+}
+
+static void outbox_sent_callback(DictionaryIterator *iter, void *context) {
+    APP_LOG(APP_LOG_LEVEL_DEBUG, "Message send succeeded");
+}
+
+static void outbox_failed_callback(DictionaryIterator *iter,
+                                      AppMessageResult reason, void *context) {
+    APP_LOG(APP_LOG_LEVEL_ERROR, "Message send failed. Reason: %d", (int)reason);
+}
+
 void comm_init() {
     APP_LOG(APP_LOG_LEVEL_INFO, "comm_init");
+
     app_message_register_inbox_received(inbox_received_handler);
+    app_message_register_inbox_dropped(inbox_dropped_callback);
+
+    app_message_register_outbox_sent(outbox_sent_callback);
+    app_message_register_outbox_failed(outbox_failed_callback);
+
     uint32_t inbox_size = app_message_inbox_size_maximum();
     uint32_t outbox_size = 256;
     app_message_open(inbox_size, outbox_size);
