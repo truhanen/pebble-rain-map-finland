@@ -14,8 +14,8 @@
 #define RESOURCE_ID_MAP_HIGHWAYS 0
 #endif
 
-#define MAP_LONGITUDE_MIN 19000
-#define MAP_LATITUDE_MIN 57000
+#define MAP_LONGITUDE_MIN 11000
+#define MAP_LATITUDE_MIN 56000
 
 static GDrawCommandImage* s_draw_command_image_raw_border_coastlines;
 static GDrawCommandImage* s_draw_command_image_raw_towns;

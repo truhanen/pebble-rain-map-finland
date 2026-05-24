@@ -90,6 +90,7 @@ function getLocation(
 export function getCoordinateBounds(
     successCallback: (bounds: CoordinateBounds) => void,
 ) {
+    // Km ranges as distances from the center
     const longitudeRangeKm = 400;
     const latitudeRangeKm =
         (longitudeRangeKm * DISPLAY_DIMENSIONS.height) /

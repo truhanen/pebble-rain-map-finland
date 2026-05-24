@@ -31,8 +31,10 @@ OVERPASS_URL = "https://overpass-api.de/api/interpreter"
 SIMPLIFICATION_TOLERANCE = 0.05
 
 # These must be the same as the respective constants in draw_map.c
-RESOURCE_LONGITUDE_MIN = 19.0
-RESOURCE_LATITUDE_MIN = 57.0
+RESOURCE_LONGITUDE_MIN = 11.0
+RESOURCE_LATITUDE_MIN = 56.0
+RESOURCE_LONGITUDE_MAX = 40.5
+RESOURCE_LATITUDE_MAX = 74.0
 
 
 @dataclasses.dataclass
@@ -54,8 +56,12 @@ class CoordinateBounds:
 def get_coastlines() -> MultiLineString:
     gdf = gpd.read_file(COASTLINE_PATH)
 
-    # Bounding box with needed Baltic sea coastlines
-    coastlines = gdf.clip(box(19.0, 57.0, 31.5, 66.0))
+    coastlines = gdf.clip(box(
+        RESOURCE_LONGITUDE_MIN,
+        RESOURCE_LATITUDE_MIN,
+        RESOURCE_LONGITUDE_MAX,
+        RESOURCE_LATITUDE_MAX,
+    ))
 
     coastlines = coastlines.geometry.union_all()
 
@@ -234,7 +240,7 @@ def get_map_data() -> MapData:
 
     highways = process_highways(highways)
 
-    main_coastline = coastlines.geoms[0]
+    main_coastline = coastlines.geoms[4]
 
     inland_border = split(border_line, main_coastline).geoms[1]
 

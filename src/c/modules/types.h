@@ -44,7 +44,7 @@ typedef struct {
 } coordinate_bounds_t;
 
 /**
- * Values are widths in kilometers
+ * Values are kilometer distances from the center
  */
 typedef enum {
     MAP_ZOOM_LEVEL_CLOSEST = 100,
