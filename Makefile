@@ -1,18 +1,19 @@
 PEBBLE_EMULATOR ?= emery  # Pebble Time 2
+PEBBLE_SDK ?= 4.9.148
 
 # This may need to be run multiple times to succeed due to some initially
 # missing file issues
 .PHONY: build
 build:
-	pebble build
+	pebble build --sdk $(PEBBLE_SDK)
 
 .PHONY: install
 install: build
-	pebble install -vv --emulator $(PEBBLE_EMULATOR)
+	pebble install -vv --emulator $(PEBBLE_EMULATOR) --sdk $(PEBBLE_SDK)
 
 .PHONY: logs
 logs:
-	PYTHONUNBUFFERED=1 pebble logs -vvvv --emulator ${PEBBLE_EMULATOR}
+	PYTHONUNBUFFERED=1 pebble logs -vvvv --emulator $(PEBBLE_EMULATOR) --sdk $(PEBBLE_SDK)
 
 .PHONY: create_screenshots
 create_screenshots:
