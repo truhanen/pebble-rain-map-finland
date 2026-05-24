@@ -8,9 +8,10 @@ import { DISPLAY_DIMENSIONS } from "./pebble";
 
 const DEBUG: boolean = false;
 
-// From app_message_inbox_size_maximum(). Note that also other data, though
-// smaller than the chunk itself may be transmitted in one message.
-const MAX_CHUNK_SIZE: number = 8000;
+// Use the same chunk size as libpebble2 PutBytes service. Higher chunk size,
+// e.g. 8000, caused the app getting stuck on QEMU on the SDK version 4.9.169.
+// The app may still get stuck in a similar way, but much less often.
+const MAX_CHUNK_SIZE: number = 2000;
 
 function transmitCoordinateBounds(
     successCallback: (bounds: CoordinateBounds) => void,
