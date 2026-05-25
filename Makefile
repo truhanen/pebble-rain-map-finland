@@ -1,11 +1,11 @@
 PEBBLE_EMULATOR ?= emery  # Pebble Time 2
 PEBBLE_SDK ?= 4.9.169
 
-# This may need to be run multiple times to succeed due to some initially
+# Needs to be run twice in a clean environment due to some initially
 # missing file issues
 .PHONY: build
 build:
-	pebble build --sdk $(PEBBLE_SDK)
+	pebble build --sdk $(PEBBLE_SDK) || pebble build --sdk $(PEBBLE_SDK)
 
 .PHONY: install
 install: build
