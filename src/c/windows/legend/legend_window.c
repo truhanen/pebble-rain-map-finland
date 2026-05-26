@@ -7,10 +7,11 @@
 #include "../../modules/types.h"
 #include "../main/draw.h"
 
-#define ROW_HEIGHT 38
+#define N_ENTRIES 6
+#define ROW_HEIGHT (PBL_DISPLAY_HEIGHT / N_ENTRIES)
 #define SWATCH_LEFT 0
 #define SWATCH_SIZE 15
-#define TEXT_LEFT 27
+#define TEXT_LEFT 25
 #define TEXT_WIDTH (PBL_DISPLAY_WIDTH - TEXT_LEFT - 4)
 #define NAME_FONT FONT_KEY_GOTHIC_14_BOLD
 #define RATE_FONT FONT_KEY_GOTHIC_14
@@ -21,7 +22,7 @@ typedef struct {
     const char* rate;
 } LegendEntry;
 
-static const LegendEntry s_entries[] = {
+static const LegendEntry s_entries[N_ENTRIES] = {
     {RAIN_LEVEL_MIST,       "Mist",               "< 0.15 mm/h" },
     {RAIN_LEVEL_TRACE,      "Trace accumulation", ">= 0.15 mm/h"},
     {RAIN_LEVEL_LIGHT,      "Light",              ">= 0.6 mm/h" },
@@ -29,8 +30,6 @@ static const LegendEntry s_entries[] = {
     {RAIN_LEVEL_HEAVY,      "Heavy",              ">= 11.5 mm/h"},
     {RAIN_LEVEL_VERY_HEAVY, "Very heavy or hail", ">= 48.6 mm/h"},
 };
-
-#define N_ENTRIES ((int)(sizeof(s_entries) / sizeof(s_entries[0])))
 
 static Window* s_window;
 static Layer* s_draw_layer;
@@ -60,7 +59,7 @@ static void update_draw_layer(Layer* layer, GContext* ctx) {
         graphics_draw_rect(ctx, swatch_rect);
 
         // Level name
-        GRect name_rect = GRect(TEXT_LEFT, row_y + 4, TEXT_WIDTH, 16);
+        GRect name_rect = GRect(TEXT_LEFT, row_y + 1, TEXT_WIDTH, 16);
         graphics_context_set_text_color(ctx, COLOR_DRAW_FOREGROUND);
         graphics_draw_text(
             ctx, entry->name, name_font, name_rect,
@@ -68,7 +67,7 @@ static void update_draw_layer(Layer* layer, GContext* ctx) {
         );
 
         // Rain rate threshold
-        GRect rate_rect = GRect(TEXT_LEFT, row_y + 20, TEXT_WIDTH, 16);
+        GRect rate_rect = GRect(TEXT_LEFT, row_y + 17, TEXT_WIDTH, 16);
         graphics_draw_text(
             ctx, entry->rate, rate_font, rate_rect,
             GTextOverflowModeTrailingEllipsis, GTextAlignmentLeft, NULL
