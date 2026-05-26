@@ -2,8 +2,8 @@
 
 #include "modules/comm/comm.h"
 #include "modules/state.h"
-#include "windows/draw_map.h"
-#include "windows/main_window.h"
+#include "windows/main/draw_map.h"
+#include "windows/main/main_window.h"
 
 static void init() {
     state_init();

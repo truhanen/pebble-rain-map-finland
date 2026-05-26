@@ -1,6 +1,6 @@
 #include "comm_radar_data.h"
 
-#include "../../windows/main_window.h"
+#include "../../windows/main/main_window.h"
 #include "../logging.h"
 #include "../radar_data.h"
 #include "../radar_data_cache.h"

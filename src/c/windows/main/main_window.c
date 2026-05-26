@@ -1,11 +1,11 @@
-#include "main_window.h"
+#include "./main_window.h"
 
 #include <pebble.h>
 
-#include "../modules/radar_data_cache.h"
-#include "../modules/types.h"
+#include "../../modules/radar_data_cache.h"
+#include "../../modules/types.h"
 #include "./draw.h"
-#include "draw_map.h"
+#include "./draw_map.h"
 
 static Window* s_window;
 static Layer* s_draw_layer;

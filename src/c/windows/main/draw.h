@@ -2,7 +2,7 @@
 
 #include <pebble.h>
 
-#include "../modules/types.h"
+#include "../../modules/types.h"
 
 #define COLOR_DRAW_FOREGROUND GColorBlack
 #define COLOR_DRAW_BACKGROUND GColorWhite

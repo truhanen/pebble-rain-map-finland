@@ -1,6 +1,6 @@
 #include "comm_coordinates.h"
 
-#include "../../windows/main_window.h"
+#include "../../windows/main/main_window.h"
 #include "../state.h"
 
 void comm_coordinates_handle_inbox(const DictionaryIterator* dict_iter) {

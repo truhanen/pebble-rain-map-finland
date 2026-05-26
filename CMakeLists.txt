@@ -47,11 +47,11 @@ add_executable(pebble_rain_map_finland
   src/c/modules/types.h
   src/c/modules/utils.c
   src/c/modules/utils.h
-  src/c/windows/draw.c
-  src/c/windows/draw.h
-  src/c/windows/draw_map.c
-  src/c/windows/draw_map.h
-  src/c/windows/main_window.c
-  src/c/windows/main_window.h
+  src/c/windows/main/draw.c
+  src/c/windows/main/draw.h
+  src/c/windows/main/draw_map.c
+  src/c/windows/main/draw_map.h
+  src/c/windows/main/main_window.c
+  src/c/windows/main/main_window.h
   src/c/main.c
 )

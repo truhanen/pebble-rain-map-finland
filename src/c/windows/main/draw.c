@@ -1,12 +1,12 @@
-#include "draw.h"
+#include "./draw.h"
 
 #include <pebble.h>
 
-#include "../modules/radar_data.h"
-#include "../modules/radar_data_cache.h"
-#include "../modules/state.h"
-#include "../modules/types.h"
-#include "../modules/utils.h"
+#include "../../modules/radar_data.h"
+#include "../../modules/radar_data_cache.h"
+#include "../../modules/state.h"
+#include "../../modules/types.h"
+#include "../../modules/utils.h"
 
 #define COLOR_RAIN_NONE GColorWhite
 #define COLOR_RAIN_MIST GColorCyan
