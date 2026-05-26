@@ -8,4 +8,4 @@ flake.lock
 node_modules
 include/pebble
 scripts/svg2pdc.py
-screenshots/png
+screenshots/sequence_png
