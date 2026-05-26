@@ -7,6 +7,10 @@
 #define COLOR_DRAW_FOREGROUND GColorBlack
 #define COLOR_DRAW_BACKGROUND GColorWhite
 
+#if defined(PBL_COLOR)
+GColor get_rain_level_color(RainLevel level);
+#endif
+
 void draw_radar(
     const Layer* layer,
     GContext* ctx,

@@ -53,5 +53,7 @@ add_executable(pebble_rain_map_finland
   src/c/windows/main/draw_map.h
   src/c/windows/main/main_window.c
   src/c/windows/main/main_window.h
+  src/c/windows/legend/legend_window.c
+  src/c/windows/legend/legend_window.h
   src/c/main.c
 )

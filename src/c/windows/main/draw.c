@@ -22,6 +22,20 @@
 #define FONT_SMALL FONT_KEY_GOTHIC_09
 #define FONT_MEDIUM FONT_KEY_GOTHIC_14_BOLD
 
+#if defined(PBL_COLOR)
+GColor get_rain_level_color(RainLevel level) {
+    switch (level) {
+        case RAIN_LEVEL_MIST:       return COLOR_RAIN_MIST;
+        case RAIN_LEVEL_TRACE:      return COLOR_RAIN_TRACE;
+        case RAIN_LEVEL_LIGHT:      return COLOR_RAIN_LIGHT;
+        case RAIN_LEVEL_MODERATE:   return COLOR_RAIN_MODERATE;
+        case RAIN_LEVEL_HEAVY:      return COLOR_RAIN_HEAVY;
+        case RAIN_LEVEL_VERY_HEAVY: return COLOR_RAIN_VERY_HEAVY;
+        default:                    return COLOR_RAIN_NONE;
+    }
+}
+#endif
+
 static void draw_radar_layer(
     const Layer* layer,
     GContext* ctx,
@@ -93,20 +107,7 @@ static void draw_radar_layer(
 
             color = is_rain_pixel ? COLOR_BW_RAIN : COLOR_BW_RAIN_NONE;
 #elif defined(PBL_COLOR)
-            color = COLOR_RAIN_VERY_HEAVY;
-            if (rain_level == RAIN_LEVEL_NONE) {
-                color = COLOR_RAIN_NONE;
-            } else if (rain_level == RAIN_LEVEL_MIST) {
-                color = COLOR_RAIN_MIST;
-            } else if (rain_level == RAIN_LEVEL_TRACE) {
-                color = COLOR_RAIN_TRACE;
-            } else if (rain_level == RAIN_LEVEL_LIGHT) {
-                color = COLOR_RAIN_LIGHT;
-            } else if (rain_level == RAIN_LEVEL_MODERATE) {
-                color = COLOR_RAIN_MODERATE;
-            } else if (rain_level == RAIN_LEVEL_HEAVY) {
-                color = COLOR_RAIN_HEAVY;
-            }
+            color = get_rain_level_color(rain_level);
 #endif
 
             graphics_context_set_stroke_color(ctx, color);

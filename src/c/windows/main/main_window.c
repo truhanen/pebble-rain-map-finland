@@ -6,6 +6,7 @@
 #include "../../modules/types.h"
 #include "./draw.h"
 #include "./draw_map.h"
+#include "../legend/legend_window.h"
 
 static Window* s_window;
 static Layer* s_draw_layer;
@@ -100,6 +101,12 @@ void change_timestep_index(int timestep_index_change) {
 }
 
 void select_single_click_handler(ClickRecognizerRef recognizer, void* context) {
+#if defined(PBL_COLOR)
+    if (s_map_zoom_level == MAP_ZOOM_LEVEL_CLOSEST) {
+        legend_window_push();
+        return;
+    }
+#endif
     zoom_closer();
 }
 
