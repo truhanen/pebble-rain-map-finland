@@ -8,6 +8,11 @@ set(CMAKE_C_STANDARD 17)
 set(TARGET_PEBBLE_PLATFORM emery)  # Pebble Time 2
 #set(TARGET_PEBBLE_PLATFORM flint)  # Pebble 2 Duo
 
+if(TARGET_PEBBLE_PLATFORM STREQUAL "emery")
+   add_compile_definitions(PBL_COLOR)
+   add_compile_definitions(PBL_TOUCH)
+endif()
+
 include_directories(src/c/modules)
 include_directories(src/c/modules/comm)
 include_directories(src/c/windows)
