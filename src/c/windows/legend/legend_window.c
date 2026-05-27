@@ -23,12 +23,12 @@ typedef struct {
 } LegendEntry;
 
 static const LegendEntry s_entries[N_ENTRIES] = {
-    {RAIN_LEVEL_MIST,       "Mist",               "< 0.15 mm/h" },
-    {RAIN_LEVEL_TRACE,      "Trace accumulation", ">= 0.15 mm/h"},
-    {RAIN_LEVEL_LIGHT,      "Light",              ">= 0.6 mm/h" },
-    {RAIN_LEVEL_MODERATE,   "Moderate",           ">= 2.7 mm/h" },
-    {RAIN_LEVEL_HEAVY,      "Heavy",              ">= 11.5 mm/h"},
-    {RAIN_LEVEL_VERY_HEAVY, "Very heavy or hail", ">= 48.6 mm/h"},
+    {RAIN_LEVEL_MIST,       "Trace accumulation / mist", "< 0.1 mm/h" },
+    {RAIN_LEVEL_TRACE,      "Trace accumulation / mist", ">= 0.1 mm/h"},
+    {RAIN_LEVEL_LIGHT,      "Light",                     ">= 0.5 mm/h"},
+    {RAIN_LEVEL_MODERATE,   "Moderate",                  ">= 2 mm/h"  },
+    {RAIN_LEVEL_HEAVY,      "Heavy",                     ">= 10 mm/h" },
+    {RAIN_LEVEL_VERY_HEAVY, "Very heavy / hail",         ">= 50 mm/h" },
 };
 
 static Window* s_window;

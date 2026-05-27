@@ -3,29 +3,34 @@
 #define RADAR_DATA_BITS_PER_POINT 3
 #define RADAR_DATA_POINTS_PER_BYTE (8 / RADAR_DATA_BITS_PER_POINT)  // 2
 
-// dBZ to mm/h conversion table from Wikipedia:
+// dBZ to mm/h conversion using Z = 200 * R^1.6 (Marshall-Palmer).
+// See https://en.wikipedia.org/wiki/DBZ_(meteorology).
 // | dBz  | mm/h  | Comment                                                |
 // |------|-------|--------------------------------------------------------|
 // | 5    | 0.07  | Trace accumulation or mist                             |
+// | 7    | 0.1   | Trace accumulation or mist THRESHOLD                   |
 // | 10   | 0.15  | Trace accumulation or mist                             |
 // | 15   | 0.3   | Trace accumulation                                     |
+// | 18   | 0.5   | Trace accumulation to light rain THRESHOLD             |
 // | 20   | 0.6   | Light rain                                             |
 // | 25   | 1.3   | Light rain                                             |
+// | 28   | 2.0   | Light to moderate rain THRESHOLD                       |
 // | 30   | 2.7   | Light to moderate rain                                 |
 // | 35   | 5.6   | Moderate rain                                          |
+// | 39   | 10    | Moderate to heavy rain THRESHOLD                       |
 // | 40   | 11.53 | Moderate to heavy rain                                 |
 // | 45   | 23.7  | Heavy rain                                             |
-// | 50   | 48.6  | Heavy rain, small hail possible                        |
+// | 50   | 48.6  | Heavy to very heavy rain THRESHOLD                     |
 // | 55   | 100   | Very heavy rain, hail possible                         |
 // | 60   | 205   | Very heavy rain, hail likely                           |
 // | 65   | 421   | Very heavy rain, hail very likely, large hail possible |
 
 typedef enum {
     RAIN_LEVEL_THRESHOLD_MIST = 0,
-    RAIN_LEVEL_THRESHOLD_TRACE = 10,
-    RAIN_LEVEL_THRESHOLD_LIGHT = 20,
-    RAIN_LEVEL_THRESHOLD_MODERATE = 30,
-    RAIN_LEVEL_THRESHOLD_HEAVY = 40,
+    RAIN_LEVEL_THRESHOLD_TRACE = 7,
+    RAIN_LEVEL_THRESHOLD_LIGHT = 18,
+    RAIN_LEVEL_THRESHOLD_MODERATE = 28,
+    RAIN_LEVEL_THRESHOLD_HEAVY = 39,
     RAIN_LEVEL_THRESHOLD_VERY_HEAVY = 50,
 } RainLevelThreshold;
 
