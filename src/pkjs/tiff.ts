@@ -7,7 +7,7 @@ export function readTiff(arrayBuffer: ArrayBuffer) {
     if (DEBUG) {
         console.log("readTiff buffer byteLength:", arrayBuffer.byteLength);
         const firstBytes = new Uint8Array(arrayBuffer).subarray(0, 8);
-        console.log("readTiff first 8 bytes:", JSON.stringify(Array.from(firstBytes)));
+        console.log("readTiff first 8 bytes:", JSON.stringify(Array.prototype.slice.call(firstBytes)));
     }
 
     const littleEndian = dataView.getUint16(0, false) === 0x4949; // Check endianness
