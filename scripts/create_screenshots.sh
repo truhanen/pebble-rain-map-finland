@@ -19,8 +19,7 @@ btn() {
 }
 
 echo "Building and installing..."
-pebble build
-pebble install -vv --emulator "$EMULATOR"
+EMULATOR="$EMULATOR" make install
 
 echo "Waiting 10 seconds for app to start..."
 sleep 10
@@ -54,9 +53,10 @@ echo "Done. Screenshots saved to $SEQUENCE_PNG_DIR/"
 echo "Copying/moving selected screenshots..."
 mv "$SEQUENCE_PNG_DIR/10_legend.png"   "$SS_DIR/screenshot_02.png"
 cp "$SEQUENCE_PNG_DIR/00_start.png"    "$SS_DIR/screenshot_03.png"
-cp "$SEQUENCE_PNG_DIR/08_select_1.png" "$SS_DIR/screenshot_04.png"
-cp "$SEQUENCE_PNG_DIR/17_down_6.png"   "$SS_DIR/screenshot_05.png"
+cp "$SEQUENCE_PNG_DIR/17_down_6.png"   "$SS_DIR/screenshot_04.png"
+cp "$SEQUENCE_PNG_DIR/08_select_1.png" "$SS_DIR/screenshot_05.png"
 
 echo "Creating GIF..."
 magick -delay 50 -loop 0 ${SEQUENCE_PNG_DIR}/*.png -layers Optimize "$SS_DIR/screenshot_01.gif"
+xattr -dr com.apple.quarantine "$SS_DIR/screenshot_01.gif"
 echo "GIF saved to $SS_DIR/screenshot_01.gif"
