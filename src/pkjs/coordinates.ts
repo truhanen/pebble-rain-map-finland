@@ -19,8 +19,12 @@ const DEFAULT_COORDINATES: Coordinates = {
     // longitude: 25.7294,
 
     // Vaasa
-    latitude: 63.0951,
-    longitude: 21.6165,
+    // latitude: 63.0951,
+    // longitude: 21.6165,
+
+    // Helsinki
+    latitude: 60.1699,
+    longitude: 24.9384,
 };
 
 const OPTIONS: PositionOptions = {
