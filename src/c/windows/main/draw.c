@@ -13,8 +13,8 @@
 #define COLOR_RAIN_TRACE GColorJaegerGreen
 #define COLOR_RAIN_LIGHT GColorChromeYellow  // Light orange
 #define COLOR_RAIN_MODERATE GColorRed
-#define COLOR_RAIN_HEAVY GColorDarkCandyAppleRed
-#define COLOR_RAIN_VERY_HEAVY GColorIndigo
+#define COLOR_RAIN_HEAVY GColorPurple
+#define COLOR_RAIN_VERY_HEAVY GColorImperialPurple
 
 #define COLOR_BW_RAIN_NONE GColorWhite
 #define COLOR_BW_RAIN GColorBlack
