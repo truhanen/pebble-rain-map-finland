@@ -39,9 +39,7 @@ void comm_radar_data_handle_inbox(const DictionaryIterator* dict_iter) {
         int chunk_start_index = chunk_start_index_t->value->int32;
 
         for (int i = 0; i < chunk_size; i++) {
-            int point_index = chunk_start_index + i;
-            uint8_t point_value = chunk_data[i];
-            radar_data_pack_point_value(s_radar_data, point_value, point_index);
+            s_radar_data->data[chunk_start_index + i] = chunk_data[i];
         }
     }
 

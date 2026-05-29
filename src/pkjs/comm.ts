@@ -100,18 +100,18 @@ interface RadarDataChunk {
 }
 
 function getRadarDataChunk(
-    radarData: DataView,
+    packedData: Uint8Array,
     chunkStartIndex: number,
 ): RadarDataChunk {
     let chunkSize: number;
-    if (radarData.byteLength - chunkStartIndex < MAX_CHUNK_SIZE) {
-        chunkSize = radarData.byteLength - chunkStartIndex;
+    if (packedData.byteLength - chunkStartIndex < MAX_CHUNK_SIZE) {
+        chunkSize = packedData.byteLength - chunkStartIndex;
     } else {
         chunkSize = MAX_CHUNK_SIZE;
     }
     const dataChunk: number[] = [];
     for (let i = 0; i < chunkSize; i++) {
-        dataChunk.push(radarData.getUint8(chunkStartIndex + i));
+        dataChunk.push(packedData[chunkStartIndex + i] ?? 0);
     }
     return {
         data: dataChunk,
@@ -169,7 +169,7 @@ function transmitRadarData(
     }
 
     const chunk: RadarDataChunk = getRadarDataChunk(
-        radarData.dataView,
+        radarData.packedData,
         chunkStartIndex,
     );
     const chunkMessage: Record<string, any> = {
@@ -192,7 +192,7 @@ function transmitRadarData(
                 return;
             }
             chunkStartIndex += chunk.size;
-            if (chunkStartIndex < radarData.dataView.byteLength) {
+            if (chunkStartIndex < radarData.packedData.byteLength) {
                 transmitRadarData(
                     specIndex,
                     coordinateBoundsFar,

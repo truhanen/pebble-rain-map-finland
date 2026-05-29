@@ -1,5 +1,6 @@
 // src/pkjs/fmi.ts
 import { readTiff } from "./tiff.js";
+import { packRadarData } from "./radar_data.js";
 
 const DEBUG: boolean = false;
 
@@ -109,8 +110,9 @@ export function downloadRadarData(
             }
         } else {
             const dataView = readTiff(this.response);
+            const packedData = packRadarData(dataView);
             const radarData: RadarData = {
-                dataView,
+                packedData,
                 widthPx,
                 heightPx,
                 timestamp,

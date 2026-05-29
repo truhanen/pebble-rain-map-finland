@@ -32,7 +32,7 @@ interface RadarDataSpec {
 }
 
 interface RadarData {
-    dataView: DataView;
+    packedData: Uint8Array;
     widthPx: number;
     heightPx: number;
     timestamp: Date;
