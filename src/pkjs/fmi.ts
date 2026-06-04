@@ -84,8 +84,17 @@ export function downloadRadarData(
 
     const request = new XMLHttpRequest();
     request.onload = function (this: XMLHttpRequest) {
+        // responseType="arraybuffer" makes responseText inaccessible, so check
+        // for a ServiceException by decoding the first bytes of the ArrayBuffer.
+        const bytes = new Uint8Array(this.response as ArrayBuffer);
+        const checkLength = Math.min(bytes.length, 1024);
+        const checkBytes: number[] = [];
+        for (let i = 0; i < checkLength; i++) {
+            checkBytes.push(bytes[i] ?? 0);
+        }
+        const responseText = String.fromCharCode.apply(null, checkBytes);
         if (
-            this.responseText.indexOf(
+            responseText.indexOf(
                 '<ServiceException code="InvalidDimensionValue"',
             ) !== -1
         ) {
@@ -109,7 +118,7 @@ export function downloadRadarData(
                 );
             }
         } else {
-            const dataView = readTiff(this.response);
+            const dataView = readTiff(this.response as ArrayBuffer);
             const packedData = packRadarData(dataView);
             const radarData: RadarData = {
                 packedData,
